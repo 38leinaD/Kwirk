@@ -12,66 +12,33 @@ public class ExitTile extends Tile implements Ticks {
 	}
 
 	public void render(SurfaceRenderer gl, int x, int y) {
-		/*
-		 * TextureRegion tex = Kwirk.TEXREG_EXIT_PULSE[(Kwirk.ticker++%40)/10];
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU(), tex.getV());
-		 * gl.vertex(x, y, 0.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU2(), tex.getV());
-		 * gl.vertex(x+1, y, 0.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU(), tex.getV2());
-		 * gl.vertex(x, y, 1.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU(), tex.getV2());
-		 * gl.vertex(x, y, 1.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU2(), tex.getV());
-		 * gl.vertex(x+1, y, 0.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU2(), tex.getV2());
-		 * gl.vertex(x+1, y, 1.0f);
-		 * 
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU(), tex.getV());
-		 * gl.vertex(x, y+1, 0.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU2(), tex.getV());
-		 * gl.vertex(x+1, y+1, 0.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU(), tex.getV2());
-		 * gl.vertex(x, y+1, 1.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU(), tex.getV2());
-		 * gl.vertex(x, y+1, 1.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU2(), tex.getV());
-		 * gl.vertex(x+1, y+1, 0.0f);
-		 * 
-		 * gl.normal(0.0f, 0.0f, 1.0f); gl.texCoord(tex.getU2(), tex.getV2());
-		 * gl.vertex(x+1, y+1, 1.0f);
-		 */
-		TextureRegion tex = Kwirk.TEXREG_CEIL;
+		
+		TextureRegion tex = Kwirk.TEXREG_STAIRS;
 
 		int numStairs = 5;
 		float stairWidth = 1.0f / numStairs;
 		for (int i = 0; i < numStairs; i++) {
+			gl.normal(0.0f, 0.0f, 1.0f);
 			gl.texCoord(tex.getU(), tex.getV());
 			gl.vertex(x + i * stairWidth, y, -1 + i * stairWidth);
 
+			gl.normal(0.0f, 0.0f, 1.0f);
 			gl.texCoord(tex.getU2(), tex.getV());
 			gl.vertex(x + (i + 1) * stairWidth, y, -1 + i * stairWidth);
 
+			gl.normal(0.0f, 0.0f, 1.0f);
 			gl.texCoord(tex.getU(), tex.getV2());
 			gl.vertex(x + i * stairWidth, y + 1, -1 + i * stairWidth);
 
+			gl.normal(0.0f, 0.0f, 1.0f);
 			gl.texCoord(tex.getU(), tex.getV2());
 			gl.vertex(x + i * stairWidth, y + 1, -1 + i * stairWidth);
 
+			gl.normal(0.0f, 0.0f, 1.0f);
 			gl.texCoord(tex.getU2(), tex.getV());
 			gl.vertex(x + (i + 1) * stairWidth, y, -1 + i * stairWidth);
 
+			gl.normal(0.0f, 0.0f, 1.0f);
 			gl.texCoord(tex.getU2(), tex.getV2());
 			gl.vertex(x + (i + 1) * stairWidth, y + 1, -1 + i * stairWidth);
 		}

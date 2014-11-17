@@ -35,6 +35,8 @@ public class Kwirk extends ApplicationAdapter {
 	public static TextureRegion TEXREG_WALL;
 	public static TextureRegion TEXREG_CEIL;
 	public static TextureRegion TEXREG_DARK;
+	public static TextureRegion TEXREG_STAIRS;
+
 	public static TextureRegion TEXREG_FLOOR;
 	public static TextureRegion TEXREG_TRI_CENTER;
 	public static TextureRegion TEXREG_TRI_ARM;
@@ -51,7 +53,6 @@ public class Kwirk extends ApplicationAdapter {
 	
 	public static Player player;
 	
-	public static List<Entity> entities = new LinkedList<Entity>();
 	public static List<Ticks> tickers = new LinkedList<Ticks>();
 	
 	public static boolean touchEventLeft = false;
@@ -73,6 +74,8 @@ public class Kwirk extends ApplicationAdapter {
 		//fontTexReg.flip(false, true);
 		font = new BitmapFont(Gdx.files.internal("04.fnt"), fontTexReg, true);
 
+		G.debugFont = new BitmapFont(true);
+		
 		G.sr = new ShapeRenderer();
 		ShaderProgram sp = new ShaderProgram(Gdx.files.internal("wall.vsh"), Gdx.files.internal("wall.fsh"));
 		System.out.println(sp.getLog());
@@ -108,12 +111,15 @@ public class Kwirk extends ApplicationAdapter {
 		TEXREG_KWIRK_SIDE = new TextureRegion(TEXTURE_GAME_ART, 16, 16, 16, 16);
 		TEXREG_KWIRK_SIDE.flip(false, true);
 		
+		TEXREG_STAIRS = new TextureRegion(TEXTURE_GAME_ART, 48, 32, 16, 16);
+		TEXREG_STAIRS.flip(false, true);
+		
 		TEXREG_BAR = new TextureRegion[3];
 		TEXREG_BAR[0] = new TextureRegion(TEXTURE_GAME_ART, 96, 0, 16, 16);
 		TEXREG_BAR[0].flip(false, true);
-		TEXREG_BAR[1] = new TextureRegion(TEXTURE_GAME_ART, 112, 0, 16, 16);
+		TEXREG_BAR[1] = new TextureRegion(TEXTURE_GAME_ART, 96, 16, 16, 16);
 		TEXREG_BAR[1].flip(false, true);
-		TEXREG_BAR[2] = new TextureRegion(TEXTURE_GAME_ART, 128, 0, 16, 16);
+		TEXREG_BAR[2] = new TextureRegion(TEXTURE_GAME_ART, 96, 32, 16, 16);
 		TEXREG_BAR[2].flip(false, true);
 		
 		TEXREG_EXIT_PULSE = new TextureRegion[4];
@@ -146,19 +152,19 @@ public class Kwirk extends ApplicationAdapter {
 				else if (p == 0xff0000ff) {
 					// tri right
 					Tri t = new Tri(x,y, 270.0f);
-					entities.add(t);
+					level.entities.add(t);
 
 				}
 				else if (p == 0xffff00ff) {
 					// tri left
 					Tri t = new Tri(x,y, 90.0f);
-					entities.add(t);
+					level.entities.add(t);
 
 				}
 				else if (p == 0xff00ffff) {
 					// bar left
 					Bar b = new Bar(x,y);
-					entities.add(b);
+					level.entities.add(b);
 
 				}
 				else if (p == 0x00ff00ff) {
@@ -281,10 +287,9 @@ public class Kwirk extends ApplicationAdapter {
 		for (Ticks t : tickers) {
 			t.tick();
 		}
-		for (Entity e : entities) {
-			e.tick();
-			e.render();
-		}
+		
+		level.tick();
+		level.render();
 		
 		Gdx.gl.glEnable(GL20.GL_BLEND);
 		Gdx.gl.glBlendFunc (GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);

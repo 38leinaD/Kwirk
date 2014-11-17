@@ -31,11 +31,11 @@ public class Entity {
 				}
 			}
 		}
-		Kwirk.entities.remove(this);
+		Kwirk.level.entities.remove(this);
 	}
 	
 	public void addToLevel() {
-		Kwirk.entities.add(this);
+		Kwirk.level.entities.add(this);
 		Kwirk.level.tileMap[this.x][this.y] = new RefTile(this);
 	}
 }

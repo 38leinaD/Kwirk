@@ -152,6 +152,11 @@ public class Edit implements InputProcessor {
 			}
 		}
 		
+		if (Gdx.input.isKeyJustPressed(Keys.S)) {
+			System.out.println("Save level.");
+			Kwirk.level.save();
+		}
+		
 		float x = Gdx.input.getX();
 		float y = Gdx.input.getY();
 		
@@ -170,16 +175,16 @@ public class Edit implements InputProcessor {
 	
 	public void render() {
 		Kwirk.batch.begin();
-		Kwirk.font.setScale(1.0f);
+		G.debugFont.setScale(1.0f);
 		for (int i=0; i<modes.size(); i++) {
 			Mode m = modes.get(i);
 			if (m == mode) {
-				Kwirk.font.setColor(Color.RED);
+				G.debugFont.setColor(Color.RED);
 			}
 			else {
-				Kwirk.font.setColor(Color.WHITE);
+				G.debugFont.setColor(Color.WHITE);
 			}
-			Kwirk.font.draw(Kwirk.batch, i +") " + m.getName(), 10, 10+i*25);
+			G.debugFont.draw(Kwirk.batch, i +") " + m.getName(), 10, 10+i*17);
 		}
 		Kwirk.batch.end();
 		

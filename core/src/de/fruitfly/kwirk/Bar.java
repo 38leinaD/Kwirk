@@ -11,7 +11,11 @@ public class Bar extends Entity {
 	public int length;
 	private static Matrix4 modelTransform = new Matrix4().idt();
 	
+	private static int texIndexer = 0;
+	private int texIndex;
+	
 	public Bar(int x, int y) {
+		texIndex = (texIndexer++) % Kwirk.TEXREG_BAR.length;
 		this.x = x;
 		this.y = y;
 		this.length = 2;
@@ -21,8 +25,8 @@ public class Bar extends Entity {
 	}
 
 	public void render() {
-		renderBlock(Kwirk.TEXREG_BAR[0], this.x, this.y, 0, 0);
-		renderBlock(Kwirk.TEXREG_BAR[2], this.x+1, this.y, 0, 0);
+		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x, this.y, 0, 0);
+		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+1, this.y, 0, 0);
 	}
 	
 	public void tick() {
