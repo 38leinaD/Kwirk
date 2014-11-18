@@ -9,15 +9,13 @@ import de.fruitfly.kwirk.tile.Tile;
 
 public class Bar extends Entity {
 	public int length;
-	private static Matrix4 modelTransform = new Matrix4().idt();
 	
 	private static int texIndexer = 0;
 	private int texIndex;
 	
 	public Bar(int x, int y) {
+		super(x, y);
 		texIndex = (texIndexer++) % Kwirk.TEXREG_BAR.length;
-		this.x = x;
-		this.y = y;
 		this.length = 2;
 
 		Kwirk.level.tileMap[x][y] = new RefTile(this);
@@ -25,8 +23,8 @@ public class Bar extends Entity {
 	}
 
 	public void render() {
-		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x, this.y, 0, 0);
-		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+1, this.y, 0, 0);
+		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x, this.y);
+		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+1, this.y);
 	}
 	
 	public void tick() {
@@ -57,137 +55,5 @@ public class Bar extends Entity {
 		}
 	}
 	
-	private void renderBlock(TextureRegion tex, int x, int y, int xoff, int yoff) {
-		modelTransform.idt();
-		modelTransform.translate(x, y, 0.0f);
-		
-		G.gl.begin(modelTransform, G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
-		
-		// front
-		G.gl.normal(0.0f, -1.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(0, 0, 0.0f);
-		
-		G.gl.normal(0.0f, -1.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.0f);
-		
-		G.gl.normal(0.0f, -1.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 0, 0.999f);
-		
-		G.gl.normal(0.0f, -1.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 0, 0.999f);
-		
-		G.gl.normal(0.0f, -1.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.0f);
-		
-		G.gl.normal(0.0f, -1.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 0, 0.999f);
-		
-		// back
-		G.gl.normal(0.0f, 1.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(1, 1, 0.0f);
-		
-		G.gl.normal(0.0f, 1.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(0, 1, 0.0f);
-		
-		G.gl.normal(0.0f, 1.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 1, 0.999f);
-		
-		G.gl.normal(0.0f, 1.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 1, 0.999f);
-		
-		G.gl.normal(0.0f, 1.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(0, 1, 0.0f);
-		
-		G.gl.normal(0.0f, 1.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
-		
-		// left
-		G.gl.normal(-1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(0, 1, 0.0f);
-		
-		G.gl.normal(-1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(0, 0, 0.0f);
-		
-		G.gl.normal(-1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
-		
-		G.gl.normal(-1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
-		
-		G.gl.normal(-1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(0, 0, 0.0f);
-		
-		G.gl.normal(-1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(0, 0, 0.999f);
-		
-		// right
-		G.gl.normal(1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(1, 0, 0.0f);
-		
-		G.gl.normal(1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 1, 0.0f);
-		
-		G.gl.normal(1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 0, 0.999f);
-		
-		G.gl.normal(1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 0, 0.999f);
-		
-		G.gl.normal(1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 1, 0.0f);
-		
-		G.gl.normal(1.0f, 0.0f, 0.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 1, 0.999f);
-		
-		// top
-		G.gl.normal(0.0f, 0.0f, 1.0f);
-		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(0, 0, 0.999f);
-		
-		G.gl.normal(0.0f, 0.0f, 1.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.999f);
-		
-		G.gl.normal(0.0f, 0.0f, 1.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
-		
-		G.gl.normal(0.0f, 0.0f, 1.0f);
-		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
-		
-		G.gl.normal(0.0f, 0.0f, 1.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.999f);
-		
-		G.gl.normal(0.0f, 0.0f, 1.0f);
-		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 1, 0.999f);
-		
-		G.gl.end();
-	}
+	
 }

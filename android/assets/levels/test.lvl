@@ -1,93 +1,269 @@
 # name: testlevel
-0,0: de.fruitfly.kwirk.tile.WallTile
-1,1: de.fruitfly.kwirk.tile.WallTile
-1,2: de.fruitfly.kwirk.tile.WallTile
-1,3: de.fruitfly.kwirk.tile.WallTile
-1,4: de.fruitfly.kwirk.tile.WallTile
-1,5: de.fruitfly.kwirk.tile.WallTile
-1,7: de.fruitfly.kwirk.tile.WallTile
-1,8: de.fruitfly.kwirk.tile.WallTile
-1,9: de.fruitfly.kwirk.tile.WallTile
-1,10: de.fruitfly.kwirk.tile.WallTile
-1,11: de.fruitfly.kwirk.tile.WallTile
-2,1: de.fruitfly.kwirk.tile.WallTile
-2,5: de.fruitfly.kwirk.tile.WallTile
-2,7: de.fruitfly.kwirk.tile.WallTile
-2,11: de.fruitfly.kwirk.tile.WallTile
-3,1: de.fruitfly.kwirk.tile.WallTile
-3,5: de.fruitfly.kwirk.tile.WallTile
-3,7: de.fruitfly.kwirk.tile.WallTile
-3,9: de.fruitfly.kwirk.tile.ExitTile
-3,11: de.fruitfly.kwirk.tile.WallTile
-4,1: de.fruitfly.kwirk.tile.WallTile
-4,5: de.fruitfly.kwirk.tile.WallTile
-4,7: de.fruitfly.kwirk.tile.WallTile
-4,11: de.fruitfly.kwirk.tile.WallTile
-5,1: de.fruitfly.kwirk.tile.WallTile
-5,2: de.fruitfly.kwirk.tile.WallTile
-5,4: de.fruitfly.kwirk.tile.WallTile
-5,5: de.fruitfly.kwirk.tile.WallTile
-5,7: de.fruitfly.kwirk.tile.WallTile
-5,8: de.fruitfly.kwirk.tile.WallTile
-5,10: de.fruitfly.kwirk.tile.WallTile
-5,11: de.fruitfly.kwirk.tile.WallTile
-6,1: de.fruitfly.kwirk.tile.WallTile
-6,5: de.fruitfly.kwirk.tile.WallTile
-6,7: de.fruitfly.kwirk.tile.WallTile
-6,11: de.fruitfly.kwirk.tile.WallTile
-7,1: de.fruitfly.kwirk.tile.WallTile
-7,5: de.fruitfly.kwirk.tile.WallTile
-7,7: de.fruitfly.kwirk.tile.WallTile
-7,11: de.fruitfly.kwirk.tile.WallTile
-8,1: de.fruitfly.kwirk.tile.WallTile
-8,5: de.fruitfly.kwirk.tile.WallTile
-8,7: de.fruitfly.kwirk.tile.WallTile
-8,11: de.fruitfly.kwirk.tile.WallTile
-9,1: de.fruitfly.kwirk.tile.WallTile
-9,5: de.fruitfly.kwirk.tile.WallTile
-9,7: de.fruitfly.kwirk.tile.WallTile
-9,9: de.fruitfly.kwirk.tile.WallTile
-9,11: de.fruitfly.kwirk.tile.WallTile
-10,1: de.fruitfly.kwirk.tile.WallTile
-10,5: de.fruitfly.kwirk.tile.WallTile
-10,7: de.fruitfly.kwirk.tile.WallTile
-10,9: de.fruitfly.kwirk.tile.WallTile
-10,11: de.fruitfly.kwirk.tile.WallTile
-11,1: de.fruitfly.kwirk.tile.WallTile
-11,5: de.fruitfly.kwirk.tile.WallTile
-11,7: de.fruitfly.kwirk.tile.WallTile
-11,11: de.fruitfly.kwirk.tile.WallTile
-12,1: de.fruitfly.kwirk.tile.WallTile
-12,5: de.fruitfly.kwirk.tile.WallTile
-12,7: de.fruitfly.kwirk.tile.WallTile
-12,11: de.fruitfly.kwirk.tile.WallTile
-13,1: de.fruitfly.kwirk.tile.WallTile
-13,5: de.fruitfly.kwirk.tile.WallTile
-13,7: de.fruitfly.kwirk.tile.WallTile
-13,11: de.fruitfly.kwirk.tile.WallTile
-14,1: de.fruitfly.kwirk.tile.WallTile
-14,2: de.fruitfly.kwirk.tile.WallTile
-14,4: de.fruitfly.kwirk.tile.WallTile
-14,5: de.fruitfly.kwirk.tile.WallTile
-14,6: de.fruitfly.kwirk.tile.WallTile
-14,7: de.fruitfly.kwirk.tile.WallTile
-14,8: de.fruitfly.kwirk.tile.WallTile
-14,10: de.fruitfly.kwirk.tile.WallTile
-14,11: de.fruitfly.kwirk.tile.WallTile
-15,1: de.fruitfly.kwirk.tile.WallTile
-15,11: de.fruitfly.kwirk.tile.WallTile
-16,1: de.fruitfly.kwirk.tile.WallTile
-16,11: de.fruitfly.kwirk.tile.WallTile
-17,1: de.fruitfly.kwirk.tile.WallTile
-17,11: de.fruitfly.kwirk.tile.WallTile
-18,1: de.fruitfly.kwirk.tile.WallTile
-18,2: de.fruitfly.kwirk.tile.WallTile
-18,3: de.fruitfly.kwirk.tile.WallTile
-18,4: de.fruitfly.kwirk.tile.WallTile
-18,5: de.fruitfly.kwirk.tile.WallTile
-18,6: de.fruitfly.kwirk.tile.WallTile
-18,7: de.fruitfly.kwirk.tile.WallTile
-18,8: de.fruitfly.kwirk.tile.WallTile
-18,9: de.fruitfly.kwirk.tile.WallTile
-18,10: de.fruitfly.kwirk.tile.WallTile
-18,11: de.fruitfly.kwirk.tile.WallTile
+size: 20,20
+t: 0,0 WallTile
+t: 0,1 WallTile
+t: 0,2 WallTile
+t: 0,3 WallTile
+t: 0,4 WallTile
+t: 0,5 WallTile
+t: 0,6 WallTile
+t: 0,7 WallTile
+t: 0,8 WallTile
+t: 0,9 WallTile
+t: 0,10 WallTile
+t: 0,11 WallTile
+t: 0,12 WallTile
+t: 0,13 WallTile
+t: 0,14 WallTile
+t: 1,0 WallTile
+t: 1,1 WallTile
+t: 1,2 WallTile
+t: 1,3 WallTile
+t: 1,4 WallTile
+t: 1,5 WallTile
+t: 1,6 WallTile
+t: 1,7 WallTile
+t: 1,8 WallTile
+t: 1,9 WallTile
+t: 1,10 WallTile
+t: 1,11 WallTile
+t: 1,12 WallTile
+t: 1,13 WallTile
+t: 1,14 WallTile
+t: 2,0 WallTile
+t: 2,1 WallTile
+t: 2,2 WallTile
+t: 2,3 WallTile
+t: 2,4 WallTile
+t: 2,5 WallTile
+t: 2,6 WallTile
+t: 2,7 WallTile
+t: 2,8 WallTile
+t: 2,9 WallTile
+t: 2,10 WallTile
+t: 2,11 WallTile
+t: 2,12 WallTile
+t: 2,13 WallTile
+t: 2,14 WallTile
+t: 3,0 WallTile
+t: 3,1 WallTile
+t: 3,2 WallTile
+t: 3,3 WallTile
+t: 3,4 WallTile
+t: 3,5 WallTile
+t: 3,6 WallTile
+t: 3,7 WallTile
+t: 3,8 WallTile
+t: 3,9 WallTile
+t: 3,10 WallTile
+t: 3,11 WallTile
+t: 3,12 WallTile
+t: 3,13 WallTile
+t: 3,14 WallTile
+t: 4,0 WallTile
+t: 4,1 WallTile
+t: 4,2 WallTile
+t: 4,3 WallTile
+t: 4,4 WallTile
+t: 4,5 WallTile
+t: 4,6 WallTile
+t: 4,7 WallTile
+t: 4,8 WallTile
+t: 4,9 WallTile
+t: 4,10 WallTile
+t: 4,11 WallTile
+t: 4,12 WallTile
+t: 4,13 WallTile
+t: 4,14 WallTile
+t: 5,0 WallTile
+t: 5,1 WallTile
+t: 5,2 WallTile
+t: 5,3 WallTile
+t: 5,4 WallTile
+t: 5,7 WallTile
+t: 5,8 WallTile
+t: 5,9 WallTile
+t: 5,10 WallTile
+t: 5,11 WallTile
+t: 5,12 WallTile
+t: 5,13 WallTile
+t: 5,14 WallTile
+t: 6,0 WallTile
+t: 6,1 WallTile
+t: 6,2 WallTile
+t: 6,3 WallTile
+t: 6,4 WallTile
+t: 6,7 WallTile
+t: 6,8 WallTile
+t: 6,9 WallTile
+t: 6,10 WallTile
+t: 6,11 WallTile
+t: 6,12 WallTile
+t: 6,13 WallTile
+t: 6,14 WallTile
+t: 7,0 WallTile
+t: 7,1 WallTile
+t: 7,2 WallTile
+t: 7,3 WallTile
+t: 7,4 WallTile
+t: 7,7 WallTile
+t: 7,12 ExitTile
+t: 7,13 WallTile
+t: 7,14 WallTile
+t: 8,0 WallTile
+t: 8,1 WallTile
+t: 8,2 WallTile
+t: 8,3 WallTile
+t: 8,4 WallTile
+t: 8,13 WallTile
+t: 8,14 WallTile
+t: 9,0 WallTile
+t: 9,1 WallTile
+t: 9,2 WallTile
+t: 9,3 WallTile
+t: 9,4 WallTile
+t: 9,10 WallTile
+t: 9,11 WallTile
+t: 9,12 WallTile
+t: 9,13 WallTile
+t: 9,14 WallTile
+t: 10,0 WallTile
+t: 10,1 WallTile
+t: 10,2 WallTile
+t: 10,3 WallTile
+t: 10,4 WallTile
+t: 10,10 WallTile
+t: 10,11 WallTile
+t: 10,12 WallTile
+t: 10,13 WallTile
+t: 10,14 WallTile
+t: 11,0 WallTile
+t: 11,1 WallTile
+t: 11,2 WallTile
+t: 11,3 WallTile
+t: 11,4 WallTile
+t: 11,7 WallTile
+t: 11,10 WallTile
+t: 11,11 WallTile
+t: 11,12 WallTile
+t: 11,13 WallTile
+t: 11,14 WallTile
+t: 12,0 WallTile
+t: 12,1 WallTile
+t: 12,2 WallTile
+t: 12,3 WallTile
+t: 12,4 WallTile
+t: 12,7 WallTile
+t: 12,10 WallTile
+t: 12,11 WallTile
+t: 12,12 WallTile
+t: 12,13 WallTile
+t: 12,14 WallTile
+t: 13,0 WallTile
+t: 13,1 WallTile
+t: 13,2 WallTile
+t: 13,3 WallTile
+t: 13,4 WallTile
+t: 13,5 WallTile
+t: 13,6 WallTile
+t: 13,7 WallTile
+t: 13,8 WallTile
+t: 13,9 WallTile
+t: 13,10 WallTile
+t: 13,11 WallTile
+t: 13,12 WallTile
+t: 13,13 WallTile
+t: 13,14 WallTile
+t: 14,0 WallTile
+t: 14,1 WallTile
+t: 14,2 WallTile
+t: 14,3 WallTile
+t: 14,4 WallTile
+t: 14,5 WallTile
+t: 14,6 WallTile
+t: 14,7 WallTile
+t: 14,8 WallTile
+t: 14,9 WallTile
+t: 14,10 WallTile
+t: 14,11 WallTile
+t: 14,12 WallTile
+t: 14,13 WallTile
+t: 14,14 WallTile
+t: 15,0 WallTile
+t: 15,1 WallTile
+t: 15,2 WallTile
+t: 15,3 WallTile
+t: 15,4 WallTile
+t: 15,5 WallTile
+t: 15,6 WallTile
+t: 15,7 WallTile
+t: 15,8 WallTile
+t: 15,9 WallTile
+t: 15,10 WallTile
+t: 15,11 WallTile
+t: 15,12 WallTile
+t: 15,13 WallTile
+t: 15,14 WallTile
+t: 16,0 WallTile
+t: 16,1 WallTile
+t: 16,2 WallTile
+t: 16,3 WallTile
+t: 16,4 WallTile
+t: 16,5 WallTile
+t: 16,6 WallTile
+t: 16,7 WallTile
+t: 16,8 WallTile
+t: 16,9 WallTile
+t: 16,10 WallTile
+t: 16,11 WallTile
+t: 16,12 WallTile
+t: 16,13 WallTile
+t: 16,14 WallTile
+t: 17,0 WallTile
+t: 17,1 WallTile
+t: 17,2 WallTile
+t: 17,3 WallTile
+t: 17,4 WallTile
+t: 17,5 WallTile
+t: 17,6 WallTile
+t: 17,7 WallTile
+t: 17,8 WallTile
+t: 17,9 WallTile
+t: 17,10 WallTile
+t: 17,11 WallTile
+t: 17,12 WallTile
+t: 17,13 WallTile
+t: 17,14 WallTile
+t: 18,0 WallTile
+t: 18,1 WallTile
+t: 18,2 WallTile
+t: 18,3 WallTile
+t: 18,4 WallTile
+t: 18,5 WallTile
+t: 18,6 WallTile
+t: 18,7 WallTile
+t: 18,8 WallTile
+t: 18,9 WallTile
+t: 18,10 WallTile
+t: 18,11 WallTile
+t: 18,12 WallTile
+t: 18,13 WallTile
+t: 18,14 WallTile
+t: 19,0 WallTile
+t: 19,1 WallTile
+t: 19,2 WallTile
+t: 19,3 WallTile
+t: 19,4 WallTile
+t: 19,5 WallTile
+t: 19,6 WallTile
+t: 19,7 WallTile
+t: 19,8 WallTile
+t: 19,9 WallTile
+t: 19,10 WallTile
+t: 19,11 WallTile
+t: 19,12 WallTile
+t: 19,13 WallTile
+t: 19,14 WallTile
+e: 9,6 Pusher[1;1]
+e: 9,7 Pusher[1;1]
+e: 7,5 Player

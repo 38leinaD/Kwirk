@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
+import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
 
@@ -18,8 +19,7 @@ public class Player extends Entity {
 	private static Matrix4 modelTransform = new Matrix4().idt();
 	private int ticker;
 	public Player(int x, int y) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 		this.interpX = x;
 		this.interpY = y;
 		this.newAngle = 180;
@@ -49,6 +49,7 @@ public class Player extends Entity {
 		interpolateMove();
 		interpolateRotation();
 
+		if (exitTicker > 0) exitTicker--;
 	}
 	
 	private void rotate(int key) {
@@ -97,6 +98,7 @@ public class Player extends Entity {
 	private float interpX, interpY;
 	private float velX, velY;
 	private float bob;
+	private int exitTicker = -1; 
 	
 	private void interpolateMove() {
 		if (!moving) return;
@@ -109,6 +111,10 @@ public class Player extends Entity {
 			velY = 0.0f;
 			interpX = x;
 			interpY = y;
+			
+			if (Kwirk.level.tileMap[x][y] instanceof ExitTile) {
+				exitTicker = 40;
+			}
 		}
 		else {
 			bob = 0.05f*MathUtils.sin(ticker*0.2f)+0.1f;
@@ -123,6 +129,7 @@ public class Player extends Entity {
 			return;
 		}
 		
+		Kwirk.level.tileMap[x][y] = null;
 		interpX = x;
 		interpY = y;
 		velX = xoff * 0.05f;
@@ -130,6 +137,10 @@ public class Player extends Entity {
 		x = x + xoff;
 		y = y + yoff;
 		moving = true;
+		
+		if (!(Kwirk.level.tileMap[x][y] instanceof ExitTile)) {
+			Kwirk.level.tileMap[x][y] = new RefTile(this);
+		}
 	}
 	
 	private void push(int playerX, int playerY, int pushX, int pushY) {
@@ -152,11 +163,15 @@ public class Player extends Entity {
 					bar.push(pushX, pushY);
 				}
 			}
+			else if (entity instanceof Pusher) {
+				Pusher p = (Pusher) entity;
+				p.push(pushX, pushY);
+			}
 		}
 	}
 
 	private boolean isBlocked(int x, int y) {
-		return Kwirk.level.tileMap[x][y] != null;
+		return Kwirk.level.tileMap[x][y] != null && !(Kwirk.level.tileMap[x][y] instanceof ExitTile);
 	}
 
 	public void render() {
@@ -168,10 +183,18 @@ public class Player extends Entity {
 		modelTransform.idt();
 		modelTransform.translate(x+0.5f, y+0.5f, bob);
 		modelTransform.scl(0.8f);
-		if (ticker < 20) {
+		if (ticker > 0 && ticker < 20) {
 			float t = (float) (Math.PI/2.0f*ticker/20.0f);
 			modelTransform.translate(0.0f, 0.0f, (10-10*MathUtils.sin(t)));
 			modelTransform.scale(MathUtils.sin(t), MathUtils.sin(t), 1+(10-10*MathUtils.sin(t)));
+		}
+		else if (exitTicker > 0) {
+			float t = (float) (Math.PI/2.0f*exitTicker/40.0f);
+			modelTransform.translate(0.0f, 0.0f, (10-10*MathUtils.sin(t)));
+			modelTransform.scale(MathUtils.sin(t), MathUtils.sin(t), 1+(10-10*MathUtils.sin(t)));
+		}
+		else if (exitTicker == 0) {
+			return;
 		}
 		modelTransform.rotate(new Vector3(0.0f, 0.0f, 1.0f), angle);
 		//modelViewProjection.set(Kwirk.cam.combined).mul(modelTransform);
@@ -338,6 +361,18 @@ public class Player extends Entity {
 		
 		G.gl.end();
 		
+	}
+
+	@Override
+	public void setX(int x) {
+		super.setX(x);
+		this.interpX = x;
+	}
+
+	@Override
+	public void setY(int y) {
+		super.setY(y);
+		this.interpY = y;
 	}
 	
 }

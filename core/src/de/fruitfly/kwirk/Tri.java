@@ -16,8 +16,7 @@ public class Tri extends Entity {
 	private static Matrix4 modelViewProjection = new Matrix4();
 	
 	public Tri(int x, int y, float angle) {
-		this.x = x;
-		this.y = y;
+		super(x, y);
 		this.angle = this.oldAngle = angle;
 		
 		if (angle == 270.0f) {
@@ -29,10 +28,10 @@ public class Tri extends Entity {
 	}
 
 	public void render() {
-		renderBlock(Kwirk.TEXREG_TRI_CENTER, this.x, this.y, 0, 0);
-		renderBlock(Kwirk.TEXREG_TRI_ARM, this.x, this.y, 1, 0);
-		renderBlock(Kwirk.TEXREG_TRI_ARM, this.x, this.y, 0, 1);
-		renderBlock(Kwirk.TEXREG_TRI_ARM, this.x, this.y, -1, 0);
+		renderBlock2(Kwirk.TEXREG_TRI_CENTER, this.x, this.y, 0, 0);
+		renderBlock2(Kwirk.TEXREG_TRI_ARM, this.x, this.y, 1, 0);
+		renderBlock2(Kwirk.TEXREG_TRI_ARM, this.x, this.y, 0, 1);
+		renderBlock2(Kwirk.TEXREG_TRI_ARM, this.x, this.y, -1, 0);
 
 	}
 	
@@ -92,7 +91,7 @@ public class Tri extends Entity {
 		}
 	}
 	
-	private void renderBlock(TextureRegion tex, int x, int y, int xoff, int yoff) {
+	private void renderBlock2(TextureRegion tex, int x, int y, int xoff, int yoff) {
 		this.angle = 0.0f;
 		modelTransform.idt();
 		modelTransform.translate(x+0.5f, y+0.5f, 0.0f);

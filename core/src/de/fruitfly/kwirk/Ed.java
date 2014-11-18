@@ -1,6 +1,8 @@
 package de.fruitfly.kwirk;
 
 import java.awt.Point;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,12 +17,13 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 
+import de.fruitfly.kwirk.tile.EditTile;
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
 import de.fruitfly.kwirk.tile.WallTile;
 
-public class Edit implements InputProcessor {
+public class Ed implements InputProcessor {
 	
 	private abstract class Mode extends InputAdapter {
 		public void leave() {
@@ -65,11 +68,14 @@ public class Edit implements InputProcessor {
 		private List<Class> OBJS = new LinkedList<Class>();
 		private int objectSelected = 0;
 		private Object objectInstance = null;
+		private Point createMin, createMax;
 		
 		public CreateMode() {
 			OBJS.add(WallTile.class);
 			OBJS.add(ExitTile.class);
-			
+			OBJS.add(Player.class);
+			OBJS.add(Pusher.class);
+
 			createStencil();
 		}
 		
@@ -80,10 +86,39 @@ public class Edit implements InputProcessor {
 					if (t != null) {
 						//System.out.println("Tile already occupied by " + t);
 					}
-					else {
-						Kwirk.level.tileMap[selectedTile.x][selectedTile.y] = new WallTile();
+					else if (objectInstance instanceof Tile){
+						Kwirk.level.tileMap[selectedTile.x][selectedTile.y] = (Tile) objectInstance;
+						if (createMin == null) {
+							createMin = new Point(selectedTile.x, selectedTile.y);
+							createMax = new Point(selectedTile.x, selectedTile.y);
+						}
+						else {
+							if (selectedTile.x < createMin.x ) {
+								createMin.x = selectedTile.x;
+							}
+							if  (selectedTile.y < createMin.y) {
+								createMin.y = selectedTile.y;
+							}
+							if (selectedTile.x > createMax.x ) {
+								createMax.x = selectedTile.x;
+							}
+							if  (selectedTile.y > createMax.y) {
+								createMax.y = selectedTile.y;
+							}
+						}
 					}
+					else if (objectInstance instanceof Entity) {
+						Entity e = (Entity) objectInstance;
+						e.addToLevel(Kwirk.level);
+					}
+					createStencil();
 				}
+			}
+			
+			if (objectInstance instanceof Entity) {
+				Entity e = (Entity) objectInstance;
+				e.setX(selectedTile.x);
+				e.setY(selectedTile.y);
 			}
 		}
 		
@@ -91,40 +126,75 @@ public class Edit implements InputProcessor {
 		public boolean scrolled(int amount) {
 			objectSelected = (objectSelected + amount) % OBJS.size();
 			while (objectSelected < 0) objectSelected += OBJS.size(); // % does not work on negatives...!?
+			if (OBJS.get(objectSelected) != Pusher.class) {
+				createMin = null;
+				createMax = null;
+			}
 			createStencil();
 			return true;
 		}
 
 		private void createStencil() {
-			try {
-				objectInstance = OBJS.get(objectSelected).newInstance();
-			} catch (InstantiationException e) {
-				e.printStackTrace();
-			} catch (IllegalAccessException e) {
-				e.printStackTrace();
-			}			
+			Class c = OBJS.get(objectSelected);
+			if (c == WallTile.class) {
+				objectInstance = new WallTile();
+			}
+			else if (c == ExitTile.class) {
+				objectInstance = new ExitTile();
+						}
+			else if (c == Player.class) {
+				objectInstance = new Player(selectedTile.x, selectedTile.y);
+			}
+			else if (c == Pusher.class) {
+				objectInstance = new EditTile();
+			}
 		}
 
 		public void render() {
+			/*
 			if (objectInstance != null) {
+				Kwirk.TEXTURE_GAME_ART.bind();
 				if (objectInstance instanceof Tile) {
 					Tile t = (Tile) objectInstance;
-					Kwirk.TEXTURE_GAME_ART.bind();
 					G.gl.begin(new Matrix4().idt(), G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
 					t.render(G.gl, selectedTile.x, selectedTile.y);
 					G.gl.end();
 				}
 				else if (objectInstance instanceof Entity) {
 					Entity e = (Entity) objectInstance;
+					e.render();
 				}
 				else {
 					throw new RuntimeException("Unkown object class");
 				}
 			}
+			*/
 		}
 		
 		public String getName() {
 			return "Create " + objectInstance;
+		}
+
+		@Override
+		public boolean keyDown(int keyCode) {
+			if (keyCode == Keys.ENTER) {
+				if (objectInstance instanceof EditTile) {
+					int[][] bitmap = new int[createMax.x - createMin.x + 1][createMax.y - createMin.y + 1];
+					for (int x=createMin.x; x<=createMax.x; x++) {
+						for (int y=createMin.y; y<=createMax.y; y++) {
+							if (Kwirk.level.tileMap[x][y] instanceof EditTile) {
+								Kwirk.level.tileMap[x][y] = null;
+								bitmap[x - createMin.x][y - createMin.y] = 1;
+							}
+							
+						}
+					}
+					Pusher p = new Pusher(createMin.x, createMin.y, bitmap);
+					p.addToLevel(Kwirk.level);
+					createMin = createMax = null;
+				}
+			}
+			return super.keyDown(keyCode);
 		}
 	}
 	
@@ -133,7 +203,7 @@ public class Edit implements InputProcessor {
 	private List<Mode> modes;
 	private Point selectedTile = new Point();
 	
-	public Edit() {
+	public Ed() {
 		modes = new LinkedList<Mode>();
 		modes.add(new EraseMode());
 		modes.add(new CreateMode());
@@ -175,16 +245,16 @@ public class Edit implements InputProcessor {
 	
 	public void render() {
 		Kwirk.batch.begin();
-		G.debugFont.setScale(1.0f);
+		Kwirk.font.setScale(0.5f);
 		for (int i=0; i<modes.size(); i++) {
 			Mode m = modes.get(i);
 			if (m == mode) {
-				G.debugFont.setColor(Color.RED);
+				Kwirk.font.setColor(Color.RED);
 			}
 			else {
-				G.debugFont.setColor(Color.WHITE);
+				Kwirk.font.setColor(Color.WHITE);
 			}
-			G.debugFont.draw(Kwirk.batch, i +") " + m.getName(), 10, 10+i*17);
+			Kwirk.font.draw(Kwirk.batch, i +") " + m.getName(), 10, 10+i*15);
 		}
 		Kwirk.batch.end();
 		

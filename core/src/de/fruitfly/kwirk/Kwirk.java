@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,7 +29,7 @@ import de.fruitfly.kwirk.tile.WallTile;
 public class Kwirk extends ApplicationAdapter {
 	public static SpriteBatch batch;
 	
-	public static Level level = new Level();
+	public static Level level;
 	
 	public static Texture TEXTURE_GAME_ART;
 	public static TextureRegion TEXREG_WALL;
@@ -62,7 +62,7 @@ public class Kwirk extends ApplicationAdapter {
 
 	public static boolean debug_showRefTiles = false;
 	
-	public Edit editor;
+	public Ed editor;
 	
 	@Override
 	public void create () {
@@ -133,6 +133,7 @@ public class Kwirk extends ApplicationAdapter {
 		TEXREG_EXIT_PULSE[3] = new TextureRegion(TEXTURE_GAME_ART, 80, 16, 16, 16);
 		TEXREG_EXIT_PULSE[3].flip(false, true);
 		
+		/*
 		Texture lvlTex = new Texture(Gdx.files.internal("level.bmp"));
 		lvlTex.getTextureData().prepare();
 		Pixmap pmap = lvlTex.getTextureData().consumePixmap();
@@ -174,8 +175,10 @@ public class Kwirk extends ApplicationAdapter {
 				}
 			}
 		}
+		*/
+		level = Level.load(Gdx.files.getFileHandle("C:/Users/daniel.platz/Dropbox/Dev/Java/Games/Kwirk/Project/android/assets/levels/" + "test.lvl", FileType.Absolute));
 		
-		editor = new Edit();
+		editor = new Ed();
 	}
 
 	boolean loading = true;
