@@ -20,10 +20,10 @@ public class Tri extends Entity {
 		this.angle = this.oldAngle = angle;
 		
 		if (angle == 270.0f) {
-			Kwirk.level.tileMap[x][y] = new RefTile(this);
-			Kwirk.level.tileMap[x][y-1] = new RefTile(this);
-			Kwirk.level.tileMap[x][y+1] = new RefTile(this);
-			Kwirk.level.tileMap[x+1][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y-1] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y+1] = new RefTile(this);
+			Kwirk.level.getTileMap()[x+1][y] = new RefTile(this);
 		}
 	}
 
@@ -58,36 +58,36 @@ public class Tri extends Entity {
 		// Reset
 		for (int xx=-1; xx<2; xx++) {
 			for (int yy=-1; yy<2; yy++) {
-				Tile t = Kwirk.level.tileMap[x+xx][y+yy];
+				Tile t = Kwirk.level.getTileMap()[x+xx][y+yy];
 				if (t instanceof RefTile && ((RefTile) t).getParent() == this) {
-					Kwirk.level.tileMap[x+xx][y+yy] = null;
+					Kwirk.level.getTileMap()[x+xx][y+yy] = null;
 				}
 			}
 		}
 		// Rebuild
 		if (angle == 0) {
-			Kwirk.level.tileMap[x-1][y] = new RefTile(this);
-			Kwirk.level.tileMap[x][y] = new RefTile(this);
-			Kwirk.level.tileMap[x+1][y] = new RefTile(this);
-			Kwirk.level.tileMap[x][y+1] = new RefTile(this);
+			Kwirk.level.getTileMap()[x-1][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x+1][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y+1] = new RefTile(this);
 		}
 		else if (angle == 90) {
-			Kwirk.level.tileMap[x][y+1] = new RefTile(this);
-			Kwirk.level.tileMap[x][y] = new RefTile(this);
-			Kwirk.level.tileMap[x][y-1] = new RefTile(this);
-			Kwirk.level.tileMap[x-1][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y+1] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y-1] = new RefTile(this);
+			Kwirk.level.getTileMap()[x-1][y] = new RefTile(this);
 		}
 		else if (angle == 180) {
-			Kwirk.level.tileMap[x-1][y] = new RefTile(this);
-			Kwirk.level.tileMap[x][y] = new RefTile(this);
-			Kwirk.level.tileMap[x+1][y] = new RefTile(this);
-			Kwirk.level.tileMap[x][y-1] = new RefTile(this);
+			Kwirk.level.getTileMap()[x-1][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x+1][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y-1] = new RefTile(this);
 		}
 		else if (angle == 270) {
-			Kwirk.level.tileMap[x][y+1] = new RefTile(this);
-			Kwirk.level.tileMap[x][y] = new RefTile(this);
-			Kwirk.level.tileMap[x][y-1] = new RefTile(this);
-			Kwirk.level.tileMap[x+1][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y+1] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y] = new RefTile(this);
+			Kwirk.level.getTileMap()[x][y-1] = new RefTile(this);
+			Kwirk.level.getTileMap()[x+1][y] = new RefTile(this);
 		}
 	}
 	

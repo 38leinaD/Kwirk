@@ -15,7 +15,7 @@ public class WaterTile extends Tile {
 		TextureRegion tex;
 		tex = Tex.TEXREG_FLOOR;
 		
-		boolean topWaterTile = !(Kwirk.level.tileMap[i][j+1] instanceof WaterTile);
+		boolean topWaterTile = !(Kwirk.level.getTileMap()[i][j+1] instanceof WaterTile);
 		if (topWaterTile) {
 		
 			gl.normal(0.0f, -1.0f, 0.0f);

@@ -6,6 +6,12 @@ import java.util.List;
 import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
@@ -14,8 +20,8 @@ import de.fruitfly.kwirk.tile.WallTile;
 import de.fruitfly.kwirk.tile.WaterTile;
 
 public class Level {
-	public Tile[][] tileMap;
-	public List<Entity> entities = new LinkedList<Entity>();
+	private Tile[][] tileMap;
+	private List<Entity> entities = new LinkedList<Entity>();
 	public String name = "testlevel";
 	
 	public Level(int w, int h) {
@@ -29,6 +35,77 @@ public class Level {
 	}
 	
 	public void render() {
+		/*
+		 * cam.position.set(1.0f,-3.0f, 9.0f); cam.up.set(0.0f, 0.0f, 1.0f);
+		 * cam.lookAt(5.0f, 3.5f, 2.0f);
+		 */
+		G.cam.position.set(10.0f, 3.0f, 9.0f);
+		G.cam.up.set(0.0f, 0.0f, 1.0f);
+		G.cam.lookAt(10.0f, 8.0f, 0.0f);
+		((OrthographicCamera) G.cam).zoom = 0.02f;
+		// ((OrthographicCamera)G.cam).zoom = 0.02f;
+
+		G.cam.update();
+
+		G.sr.setProjectionMatrix(G.cam.projection);
+		G.sr.setTransformMatrix(G.cam.view);
+
+		G.sr.setAutoShapeType(true);
+		G.sr.begin();
+		G.sr.setColor(Color.RED);
+		G.sr.line(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 0.0f, 0.0f));
+		G.sr.setColor(Color.GREEN);
+		G.sr.line(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
+		G.sr.setColor(Color.BLUE);
+		G.sr.line(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f));
+
+		// shapeRenderer.box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+		G.sr.end();
+
+		Tex.TEXTURE_GAME_ART.bind();
+
+		G.gl.begin(new Matrix4().idt(), G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
+		for (int i = 0; i < this.getTileMap().length; i++) {
+			for (int j = 0; j < this.getTileMap()[0].length; j++) {
+				Tile t = this.getTileMap()[i][j];
+
+				if (t == null || (t instanceof RefTile)) {
+					// floor
+					TextureRegion tex;
+					tex = Tex.TEXREG_FLOOR;
+
+					G.gl.normal(0.0f, 0.0f, 1.0f);
+					G.gl.texCoord(tex.getU(), tex.getV());
+					G.gl.vertex(i, j, 0.0f);
+
+					G.gl.normal(0.0f, 0.0f, 1.0f);
+					G.gl.texCoord(tex.getU2(), tex.getV());
+					G.gl.vertex(i + 1, j, 0.0f);
+
+					G.gl.normal(0.0f, 0.0f, 1.0f);
+					G.gl.texCoord(tex.getU(), tex.getV2());
+					G.gl.vertex(i, j + 1, 0.0f);
+
+					G.gl.normal(0.0f, 0.0f, 1.0f);
+					G.gl.texCoord(tex.getU(), tex.getV2());
+					G.gl.vertex(i, j + 1, 0.0f);
+
+					G.gl.normal(0.0f, 0.0f, 1.0f);
+					G.gl.texCoord(tex.getU2(), tex.getV());
+					G.gl.vertex(i + 1, j, 0.0f);
+
+					G.gl.normal(0.0f, 0.0f, 1.0f);
+					G.gl.texCoord(tex.getU2(), tex.getV2());
+					G.gl.vertex(i + 1, j + 1, 0.0f);
+				}
+
+				if (t == null)
+					continue;
+				t.render(G.gl, i, j);
+			}
+		}
+		G.gl.end();
+		
 		for (Entity e : entities) {
 			e.render();
 		}
@@ -156,5 +233,13 @@ public class Level {
 			}
 		}
 		return l;
+	}
+
+	public Tile[][] getTileMap() {
+		return tileMap;
+	}
+
+	public List<Entity> getEntities() {
+		return entities;
 	}
 }

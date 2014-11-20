@@ -21,8 +21,7 @@ public class Pusher extends Entity {
 	
 	@Override
 	public void addToLevel(Level level) {
-		level.entities.add(this);
-		
+		level.getEntities().add(this);
 		addRefTiles(level);
 	}
 	
@@ -30,7 +29,7 @@ public class Pusher extends Entity {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				level.tileMap[this.x+x][this.y+y] = new RefTile(this);
+				level.getTileMap()[this.x+x][this.y+y] = new RefTile(this);
 			}
 		}
 	}
@@ -39,7 +38,7 @@ public class Pusher extends Entity {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				level.tileMap[this.x+x][this.y+y] = null;
+				level.getTileMap()[this.x+x][this.y+y] = null;
 			}
 		}
 	}
@@ -48,7 +47,7 @@ public class Pusher extends Entity {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				Tile t = Kwirk.level.tileMap[this.x+x+xoff][this.y+y+yoff];
+				Tile t = Kwirk.level.getTileMap()[this.x+x+xoff][this.y+y+yoff];
 				if (t == null) {
 					// unblocked
 					continue;
@@ -83,7 +82,7 @@ public class Pusher extends Entity {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				Tile t = Kwirk.level.tileMap[this.x+x][this.y+y];
+				Tile t = Kwirk.level.getTileMap()[this.x+x][this.y+y];
 				if (!(t instanceof WaterTile)) {
 					floating = false;
 					return;

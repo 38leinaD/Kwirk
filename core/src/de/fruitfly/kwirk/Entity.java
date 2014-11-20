@@ -33,20 +33,11 @@ public class Entity {
 	}
 	
 	public void removeFromLevel() {
-		for (int x=0; x<Kwirk.level.tileMap.length; x++) {
-			for (int y=0; y<Kwirk.level.tileMap[0].length; y++) {
-				Tile t = Kwirk.level.tileMap[x][y];
-				if (t != null && t instanceof RefTile && ((RefTile) t).getParent() == this) {
-					Kwirk.level.tileMap[x][y] = null;
-				}
-			}
-		}
-		Kwirk.level.entities.remove(this);
+		Kwirk.level.getEntities().remove(this);
 	}
 	
 	public void addToLevel(Level level) {
-		level.entities.add(this);
-		level.tileMap[this.x][this.y] = new RefTile(this);
+		level.getEntities().add(this);
 	}
 
 	public void setX(int x) {

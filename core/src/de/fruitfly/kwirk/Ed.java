@@ -45,13 +45,13 @@ public class Ed implements InputProcessor {
 		public void tick() {
 			if (Gdx.input.isButtonPressed(0)) {
 				if (isWorldTile(selectedTile.x, selectedTile.y)) {
-					Tile t = Kwirk.level.tileMap[selectedTile.x][selectedTile.y];
+					Tile t = Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y];
 					if (t instanceof RefTile) {
 						Entity e = ((RefTile) t).getParent();
 						e.removeFromLevel();
 					}
 					else {
-						Kwirk.level.tileMap[selectedTile.x][selectedTile.y] = null;
+						Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y] = null;
 					}
 				}
 			}
@@ -81,12 +81,12 @@ public class Ed implements InputProcessor {
 		public void tick() {
 			if (Gdx.input.isButtonPressed(0)) {
 				if (isWorldTile(selectedTile.x, selectedTile.y)) {
-					Tile t = Kwirk.level.tileMap[selectedTile.x][selectedTile.y];
+					Tile t = Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y];
 					if (t != null) {
 						//System.out.println("Tile already occupied by " + t);
 					}
 					else if (objectInstance instanceof Tile){
-						Kwirk.level.tileMap[selectedTile.x][selectedTile.y] = (Tile) objectInstance;
+						Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y] = (Tile) objectInstance;
 						if (createMin == null) {
 							createMin = new Point(selectedTile.x, selectedTile.y);
 							createMax = new Point(selectedTile.x, selectedTile.y);
@@ -184,8 +184,8 @@ public class Ed implements InputProcessor {
 					int[][] bitmap = new int[createMax.x - createMin.x + 1][createMax.y - createMin.y + 1];
 					for (int x=createMin.x; x<=createMax.x; x++) {
 						for (int y=createMin.y; y<=createMax.y; y++) {
-							if (Kwirk.level.tileMap[x][y] instanceof EditTile) {
-								Kwirk.level.tileMap[x][y] = null;
+							if (Kwirk.level.getTileMap()[x][y] instanceof EditTile) {
+								Kwirk.level.getTileMap()[x][y] = null;
 								bitmap[x - createMin.x][y - createMin.y] = 1;
 							}
 							
@@ -285,8 +285,8 @@ public class Ed implements InputProcessor {
 	}
 	
 	private boolean isWorldTile(int x, int y) {
-		if (x < 0 || x >= Kwirk.level.tileMap.length) return false;
-		if (y <0 || y >= Kwirk.level.tileMap[1].length) return false;
+		if (x < 0 || x >= Kwirk.level.getTileMap().length) return false;
+		if (y <0 || y >= Kwirk.level.getTileMap()[1].length) return false;
 		return true;
 	}
 
