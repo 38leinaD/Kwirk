@@ -16,6 +16,7 @@ import com.badlogic.gdx.math.Vector3;
 import de.fruitfly.kwirk.entity.Entity;
 import de.fruitfly.kwirk.entity.Player;
 import de.fruitfly.kwirk.entity.Pusher;
+import de.fruitfly.kwirk.entity.Rotator;
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
@@ -163,6 +164,23 @@ public class Level {
 				
 				f.writeString("e: " + p.getX() + "," + p.getY() + " Pusher[" + sb.toString() + "]\n", true);
 			}
+			else if (e instanceof Rotator) {
+				Rotator r = (Rotator) e;
+				StringBuffer sb = new StringBuffer();
+				for (int xx=0; xx<r.getBitmap().length; xx++) {
+					for (int yy=0; yy<r.getBitmap()[0].length; yy++) {
+						sb.append(r.getBitmap()[xx][yy]);
+						if (yy != r.getBitmap()[0].length-1) {
+							sb.append(",");
+						}
+					}
+					if (xx != r.getBitmap().length-1) {
+						sb.append(";");
+					}
+				}
+				
+				f.writeString("e: " + r.getX() + "," + r.getY() + " Rotator[" + sb.toString() + "]\n", true);
+			}
 			else if (e instanceof Player) {
 				f.writeString("e: " + e.getX() + "," + e.getY() + " Player\n", true);
 			}
@@ -230,6 +248,20 @@ public class Level {
 					}
 					Pusher p = new Pusher(x, y, bitmap);
 					p.addToLevel(l);
+				}
+				else if (type.startsWith("Rotator")) {
+					String bm = type.substring(8, type.length()-1);
+					String[] lines = bm.split(";");
+					int[][] bitmap = new int[lines.length][];
+					for (int i=0; i<bitmap.length; i++) {
+						String[] linetokens = lines[i].split(",");
+						bitmap[i] = new int[linetokens.length];
+						for (int j=0; j<linetokens.length; j++) {
+							bitmap[i][j] = Integer.parseInt(linetokens[j]);
+						}
+					}
+					Rotator r = new Rotator(x, y, bitmap);
+					r.addToLevel(l);
 				}
 				
 			}

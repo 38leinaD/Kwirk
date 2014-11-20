@@ -9,6 +9,8 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -17,6 +19,7 @@ import com.badlogic.gdx.math.collision.Ray;
 import de.fruitfly.kwirk.entity.Entity;
 import de.fruitfly.kwirk.entity.Player;
 import de.fruitfly.kwirk.entity.Pusher;
+import de.fruitfly.kwirk.entity.Rotator;
 import de.fruitfly.kwirk.tile.EditTile;
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
@@ -81,6 +84,7 @@ public class Ed implements InputProcessor {
 			OBJS.add(WaterTile.class);
 			OBJS.add(Player.class);
 			OBJS.add(Pusher.class);
+			OBJS.add(Rotator.class);
 
 			createStencil();
 		}
@@ -94,7 +98,12 @@ public class Ed implements InputProcessor {
 						//System.out.println("Tile already occupied by " + t);
 					}
 					else if (objectInstance instanceof Tile){
-						Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y] = (Tile) objectInstance;
+						if (objectInstance instanceof EditTile) {
+							Kwirk.level.getEntityTileMap()[selectedTile.x][selectedTile.y] = (EditTile)objectInstance;
+						}
+						else {
+							Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y] = (Tile) objectInstance;
+						}
 						if (createMin == null) {
 							createMin = new Point(selectedTile.x, selectedTile.y);
 							createMax = new Point(selectedTile.x, selectedTile.y);
@@ -158,28 +167,62 @@ public class Ed implements InputProcessor {
 			else if (c == Pusher.class) {
 				objectInstance = new EditTile(null);
 			}
+			else if (c == Rotator.class) {
+				objectInstance = new EditTile(null);
+			}
 		}
 
 		public String getName() {
-			return "Create " + objectInstance;
+			return "Create " +  OBJS.get(objectSelected).getSimpleName();
 		}
 
 		@Override
 		public boolean keyDown(int keyCode) {
 			if (keyCode == Keys.ENTER) {
-				if (objectInstance instanceof EditTile) {
-					int[][] bitmap = new int[createMax.x - createMin.x + 1][createMax.y - createMin.y + 1];
-					for (int x=createMin.x; x<=createMax.x; x++) {
-						for (int y=createMin.y; y<=createMax.y; y++) {
+				Class c = OBJS.get(objectSelected);
+				if (c == Pusher.class) {
+					if (objectInstance instanceof EditTile) {
+						int[][] bitmap = new int[createMax.x - createMin.x + 1][createMax.y - createMin.y + 1];
+						for (int x=createMin.x; x<=createMax.x; x++) {
+							for (int y=createMin.y; y<=createMax.y; y++) {
+								if (Kwirk.level.getEntityTileMap()[x][y] instanceof EditTile) {
+									Kwirk.level.getEntityTileMap()[x][y] = null;
+									bitmap[x - createMin.x][y - createMin.y] = 1;
+								}
+								
+							}
+						}
+						Pusher p = new Pusher(createMin.x, createMin.y, bitmap);
+						p.addToLevel(Kwirk.level);
+						createMin = createMax = null;
+					}
+				}
+				else if (c == Rotator.class) {
+					int centerX = selectedTile.x;
+					int centerY = selectedTile.y;
+					
+					int rightX = createMax.x - centerX;
+					int leftX = centerX - createMin.x;
+					int sideX = Math.max(rightX, leftX);
+					
+					int topY = createMax.y - centerY;
+					int bottomY = centerY - createMin.y;
+					int sideY = Math.max(topY, bottomY);
+
+					int[][] bitmap = new int[2*sideX+1][2*sideY+1];
+
+					for (int x=centerX-leftX; x<=centerX+rightX; x++) {
+						for (int y=centerY-bottomY; y<=centerY+topY; y++) {
 							if (Kwirk.level.getEntityTileMap()[x][y] instanceof EditTile) {
 								Kwirk.level.getEntityTileMap()[x][y] = null;
-								bitmap[x - createMin.x][y - createMin.y] = 1;
+								bitmap[x-(centerX-leftX)][y-(centerY-bottomY)] = 1;
 							}
-							
 						}
 					}
-					Pusher p = new Pusher(createMin.x, createMin.y, bitmap);
-					p.addToLevel(Kwirk.level);
+					
+					Rotator r = new Rotator(createMin.x, createMin.y, bitmap);
+					r.addToLevel(Kwirk.level);
+					
 					createMin = createMax = null;
 				}
 			}
@@ -233,6 +276,21 @@ public class Ed implements InputProcessor {
 	}
 	
 	public void render() {
+		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+
+		G.gl.begin(new Matrix4().idt(), G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
+		for (int i = 0; i < Kwirk.level.getEntityTileMap().length; i++) {
+			for (int j = 0; j < Kwirk.level.getEntityTileMap()[0].length; j++) {
+				RefTile t = Kwirk.level.getEntityTileMap()[i][j];
+
+				if (t != null && t instanceof EditTile) {
+					t.render(G.gl, i, j);
+				}
+			}
+		}
+		G.gl.end();
+		Gdx.gl.glDisable(GL20.GL_DEPTH_TEST);
+
 		Kwirk.batch.begin();
 		Kwirk.font.setScale(0.5f);
 		for (int i=0; i<modes.size(); i++) {
