@@ -1,4 +1,4 @@
-package de.fruitfly.kwirk;
+package de.fruitfly.kwirk.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -8,6 +8,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 
+import de.fruitfly.kwirk.G;
+import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;

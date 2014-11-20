@@ -3,11 +3,11 @@ package de.fruitfly.kwirk.tile;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 
-import de.fruitfly.kwirk.Entity;
 import de.fruitfly.kwirk.Kwirk;
-import de.fruitfly.kwirk.Pusher;
 import de.fruitfly.kwirk.SurfaceRenderer;
 import de.fruitfly.kwirk.Tex;
+import de.fruitfly.kwirk.entity.Entity;
+import de.fruitfly.kwirk.entity.Pusher;
 
 public class WaterTile extends Tile {
 

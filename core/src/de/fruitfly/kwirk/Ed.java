@@ -14,6 +14,9 @@ import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 
+import de.fruitfly.kwirk.entity.Entity;
+import de.fruitfly.kwirk.entity.Player;
+import de.fruitfly.kwirk.entity.Pusher;
 import de.fruitfly.kwirk.tile.EditTile;
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;

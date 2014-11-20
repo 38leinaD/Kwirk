@@ -2,9 +2,9 @@ package de.fruitfly.kwirk.tile;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-import de.fruitfly.kwirk.Entity;
 import de.fruitfly.kwirk.SurfaceRenderer;
 import de.fruitfly.kwirk.Tex;
+import de.fruitfly.kwirk.entity.Entity;
 
 public class EditTile extends RefTile {
 

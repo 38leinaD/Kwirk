@@ -1,9 +1,12 @@
-package de.fruitfly.kwirk;
+package de.fruitfly.kwirk.entity;
 
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
 
+import de.fruitfly.kwirk.G;
+import de.fruitfly.kwirk.Kwirk;
+import de.fruitfly.kwirk.Level;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
 

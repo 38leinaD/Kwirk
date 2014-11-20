@@ -1,7 +1,7 @@
 package de.fruitfly.kwirk.tile;
 
-import de.fruitfly.kwirk.Entity;
 import de.fruitfly.kwirk.SurfaceRenderer;
+import de.fruitfly.kwirk.entity.Entity;
 
 public class Tile {
 

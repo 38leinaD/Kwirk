@@ -1,5 +1,8 @@
-package de.fruitfly.kwirk;
+package de.fruitfly.kwirk.entity;
 
+import de.fruitfly.kwirk.Kwirk;
+import de.fruitfly.kwirk.Level;
+import de.fruitfly.kwirk.Tex;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
 import de.fruitfly.kwirk.tile.WaterTile;
