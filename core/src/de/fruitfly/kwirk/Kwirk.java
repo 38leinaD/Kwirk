@@ -30,25 +30,9 @@ public class Kwirk extends ApplicationAdapter {
 	
 	public static Level level;
 	
-	public static Texture TEXTURE_GAME_ART;
-	public static TextureRegion TEXREG_WALL;
-	public static TextureRegion TEXREG_CEIL;
-	public static TextureRegion TEXREG_DARK;
-	public static TextureRegion TEXREG_STAIRS;
-
-	public static TextureRegion TEXREG_FLOOR;
-	public static TextureRegion TEXREG_WATER;
-
-	public static TextureRegion TEXREG_TRI_CENTER;
-	public static TextureRegion TEXREG_TRI_ARM;
-	public static TextureRegion[] TEXREG_KWIRK;
-	public static TextureRegion[] TEXREG_KWURK;
-
-	public static TextureRegion[] TEXREG_BAR;
 
 	public static BitmapFont font;
 	
-	public static TextureRegion[] TEXREG_EXIT_PULSE;
 
 	public static int ticker;
 	
@@ -82,70 +66,7 @@ public class Kwirk extends ApplicationAdapter {
 		G.cam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		//cam = new PerspectiveCamera(70, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		
-		TEXTURE_GAME_ART = new Texture(Gdx.files.internal("tex.png"));
-
-		TEXREG_WALL = new TextureRegion(TEXTURE_GAME_ART, 16, 0, 16, 16);
-		TEXREG_WALL.flip(false, true);
-		TEXREG_CEIL = new TextureRegion(TEXTURE_GAME_ART, 16, 0, 16, 16);
-		TEXREG_CEIL.flip(false, true);
-		
-		TEXREG_FLOOR = new TextureRegion(TEXTURE_GAME_ART, 32, 0, 16, 16);
-		TEXREG_FLOOR.flip(false, true);
-		
-		TEXREG_WATER = new TextureRegion(TEXTURE_GAME_ART, 64, 32, 16, 16);
-		TEXREG_WATER.flip(false, true);
-		
-		TEXREG_DARK = new TextureRegion(TEXTURE_GAME_ART, 0, 48, 16, 16);
-		TEXREG_DARK.flip(false, true);
-		
-		TEXREG_TRI_CENTER = new TextureRegion(TEXTURE_GAME_ART, 48, 0, 16, 16);
-		TEXREG_TRI_CENTER.flip(false, true);
-		
-		TEXREG_TRI_ARM = new TextureRegion(TEXTURE_GAME_ART, 64, 0, 16, 16);
-		TEXREG_TRI_ARM.flip(false, true);
-		
-		TEXREG_KWIRK = new TextureRegion[3];
-		TEXREG_KWIRK[0] = new TextureRegion(TEXTURE_GAME_ART, 0, 16, 16, 16);
-		TEXREG_KWIRK[0].flip(false, true);
-		
-		TEXREG_KWIRK[1] = new TextureRegion(TEXTURE_GAME_ART, 0, 32, 16, 16);
-		TEXREG_KWIRK[1].flip(false, true);
-		
-		TEXREG_KWIRK[2] = new TextureRegion(TEXTURE_GAME_ART, 16, 16, 16, 16);
-		TEXREG_KWIRK[2].flip(false, true);
-		
-		TEXREG_KWURK = new TextureRegion[3];
-		TEXREG_KWURK[0] = new TextureRegion(TEXTURE_GAME_ART, 0, 64, 16, 16);
-		TEXREG_KWURK[0].flip(false, true);
-		
-		TEXREG_KWURK[1] = new TextureRegion(TEXTURE_GAME_ART, 0, 80, 16, 16);
-		TEXREG_KWURK[1].flip(false, true);
-		
-		TEXREG_KWURK[2] = new TextureRegion(TEXTURE_GAME_ART, 16, 64, 16, 16);
-		TEXREG_KWURK[2].flip(false, true);
-		
-		
-		TEXREG_STAIRS = new TextureRegion(TEXTURE_GAME_ART, 48, 32, 16, 16);
-		TEXREG_STAIRS.flip(false, true);
-		
-		TEXREG_BAR = new TextureRegion[3];
-		TEXREG_BAR[0] = new TextureRegion(TEXTURE_GAME_ART, 96, 0, 16, 16);
-		TEXREG_BAR[0].flip(false, true);
-		TEXREG_BAR[1] = new TextureRegion(TEXTURE_GAME_ART, 96, 16, 16, 16);
-		TEXREG_BAR[1].flip(false, true);
-		TEXREG_BAR[2] = new TextureRegion(TEXTURE_GAME_ART, 96, 32, 16, 16);
-		TEXREG_BAR[2].flip(false, true);
-		
-		TEXREG_EXIT_PULSE = new TextureRegion[4];
-		
-		TEXREG_EXIT_PULSE[0] = new TextureRegion(TEXTURE_GAME_ART, 32, 16, 16, 16);
-		TEXREG_EXIT_PULSE[0].flip(false, true);
-		TEXREG_EXIT_PULSE[1] = new TextureRegion(TEXTURE_GAME_ART, 48, 16, 16, 16);
-		TEXREG_EXIT_PULSE[1].flip(false, true);
-		TEXREG_EXIT_PULSE[2] = new TextureRegion(TEXTURE_GAME_ART, 64, 16, 16, 16);
-		TEXREG_EXIT_PULSE[2].flip(false, true);
-		TEXREG_EXIT_PULSE[3] = new TextureRegion(TEXTURE_GAME_ART, 80, 16, 16, 16);
-		TEXREG_EXIT_PULSE[3].flip(false, true);
+		Tex.init();
 		
 		/*
 		Texture lvlTex = new Texture(Gdx.files.internal("level.bmp"));
@@ -256,7 +177,7 @@ public class Kwirk extends ApplicationAdapter {
 		//shapeRenderer.box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
 		G.sr.end();
 		
-		TEXTURE_GAME_ART.bind();
+		Tex.TEXTURE_GAME_ART.bind();
 		
 		G.gl.begin(new Matrix4().idt(), G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
 		for (int i=0; i<level.tileMap.length; i++) {
@@ -266,7 +187,7 @@ public class Kwirk extends ApplicationAdapter {
 				if (t == null || (t instanceof RefTile)) {
 					// floor
 					TextureRegion tex;
-					tex = TEXREG_FLOOR;
+					tex = Tex.TEXREG_FLOOR;
 					
 					G.gl.normal(0.0f, 0.0f, 1.0f);
 					G.gl.texCoord(tex.getU(), tex.getV());

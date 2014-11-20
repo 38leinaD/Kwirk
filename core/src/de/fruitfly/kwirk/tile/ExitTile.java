@@ -3,8 +3,8 @@ package de.fruitfly.kwirk.tile;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import de.fruitfly.kwirk.Entity;
-import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.SurfaceRenderer;
+import de.fruitfly.kwirk.Tex;
 import de.fruitfly.kwirk.Ticks;
 
 public class ExitTile extends Tile implements Ticks {
@@ -14,7 +14,7 @@ public class ExitTile extends Tile implements Ticks {
 
 	public void render(SurfaceRenderer gl, int x, int y) {
 		
-		TextureRegion tex = Kwirk.TEXREG_STAIRS;
+		TextureRegion tex = Tex.TEXREG_STAIRS;
 
 		int numStairs = 5;
 		float stairWidth = 1.0f / numStairs;
@@ -44,7 +44,7 @@ public class ExitTile extends Tile implements Ticks {
 			gl.vertex(x + (i + 1) * stairWidth, y + 1, -1 + i * stairWidth);
 		}
 
-		tex = Kwirk.TEXREG_DARK;
+		tex = Tex.TEXREG_DARK;
 
 		gl.normal(0.0f, 0.0f, 1.0f);
 		gl.texCoord(tex.getU(), tex.getV());

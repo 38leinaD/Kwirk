@@ -7,12 +7,13 @@ import de.fruitfly.kwirk.Entity;
 import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.Pusher;
 import de.fruitfly.kwirk.SurfaceRenderer;
+import de.fruitfly.kwirk.Tex;
 
 public class WaterTile extends Tile {
 
 	public void render(SurfaceRenderer gl, int i, int j) {
 		TextureRegion tex;
-		tex = Kwirk.TEXREG_FLOOR;
+		tex = Tex.TEXREG_FLOOR;
 		
 		boolean topWaterTile = !(Kwirk.level.tileMap[i][j+1] instanceof WaterTile);
 		if (topWaterTile) {
@@ -42,7 +43,7 @@ public class WaterTile extends Tile {
 			gl.vertex(i+1, j+1, 0.0f);
 			
 			
-			tex = Kwirk.TEXREG_WATER;
+			tex = Tex.TEXREG_WATER;
 			
 			int strips = 10;
 			float stripWidth = 1.0f/strips;
@@ -75,7 +76,7 @@ public class WaterTile extends Tile {
 			}
 		}
 		else {
-			tex = Kwirk.TEXREG_WATER;
+			tex = Tex.TEXREG_WATER;
 			gl.normal(0.0f, 0.0f, 1.0f);
 			gl.texCoord(tex.getU(), tex.getV());
 			gl.vertex(i, j, -0.5f);

@@ -14,7 +14,7 @@ public class Pusher extends Entity {
 	
 	public Pusher(int x, int y, int[][] bitmap) {
 		super(x, y);
-		texIndex = (texIndexer++) % Kwirk.TEXREG_BAR.length;
+		texIndex = (texIndexer++) % Tex.TEXREG_BAR.length;
 		this.bitmap = bitmap;
 		
 	}
@@ -109,7 +109,7 @@ public class Pusher extends Entity {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				this.renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+x, this.y+y, z);				
+				this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x+x, this.y+y, z);				
 			}
 		}
 	}

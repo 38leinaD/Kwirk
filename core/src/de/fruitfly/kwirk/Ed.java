@@ -145,7 +145,7 @@ public class Ed implements InputProcessor {
 				objectInstance = new WaterTile();
 			}
 			else if (c == Player.class) {
-				objectInstance = new Player(selectedTile.x, selectedTile.y, Kwirk.TEXREG_KWIRK);
+				objectInstance = new Player(selectedTile.x, selectedTile.y, Tex.TEXREG_KWIRK);
 			}
 			else if (c == Pusher.class) {
 				objectInstance = new EditTile();

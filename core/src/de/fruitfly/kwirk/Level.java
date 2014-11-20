@@ -128,7 +128,7 @@ public class Level {
 				String type = line.split(" ")[2];
 				
 				if (type.startsWith("Player")) {
-					Player p = new Player(x, y, firstPlayer ? Kwirk.TEXREG_KWIRK : Kwirk.TEXREG_KWURK);
+					Player p = new Player(x, y, firstPlayer ? Tex.TEXREG_KWIRK : Tex.TEXREG_KWURK);
 					p.addToLevel(l);
 					if (firstPlayer) {
 						p.isControlled = true;

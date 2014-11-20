@@ -28,10 +28,10 @@ public class Tri extends Entity {
 	}
 
 	public void render() {
-		renderBlock2(Kwirk.TEXREG_TRI_CENTER, this.x, this.y, 0, 0);
-		renderBlock2(Kwirk.TEXREG_TRI_ARM, this.x, this.y, 1, 0);
-		renderBlock2(Kwirk.TEXREG_TRI_ARM, this.x, this.y, 0, 1);
-		renderBlock2(Kwirk.TEXREG_TRI_ARM, this.x, this.y, -1, 0);
+		renderBlock2(Tex.TEXREG_TRI_CENTER, this.x, this.y, 0, 0);
+		renderBlock2(Tex.TEXREG_TRI_ARM, this.x, this.y, 1, 0);
+		renderBlock2(Tex.TEXREG_TRI_ARM, this.x, this.y, 0, 1);
+		renderBlock2(Tex.TEXREG_TRI_ARM, this.x, this.y, -1, 0);
 
 	}
 	

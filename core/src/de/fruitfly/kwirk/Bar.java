@@ -15,7 +15,7 @@ public class Bar extends Entity {
 	
 	public Bar(int x, int y) {
 		super(x, y);
-		texIndex = (texIndexer++) % Kwirk.TEXREG_BAR.length;
+		texIndex = (texIndexer++) % Tex.TEXREG_BAR.length;
 		this.length = 2;
 
 		Kwirk.level.tileMap[x][y] = new RefTile(this);
@@ -23,8 +23,8 @@ public class Bar extends Entity {
 	}
 
 	public void render() {
-		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x, this.y, 0.0f);
-		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+1, this.y, 0.0f);
+		renderBlock(Tex.TEXREG_BAR[texIndex], this.x, this.y, 0.0f);
+		renderBlock(Tex.TEXREG_BAR[texIndex], this.x+1, this.y, 0.0f);
 	}
 	
 	public void tick() {

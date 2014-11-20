@@ -1,10 +1,9 @@
 package de.fruitfly.kwirk.tile;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer;
 
-import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.SurfaceRenderer;
+import de.fruitfly.kwirk.Tex;
 
 public class WallTile extends Tile {
 
@@ -13,7 +12,7 @@ public class WallTile extends Tile {
 		TextureRegion tex;
 		
 		if (j != 0) {
-			tex = Kwirk.TEXREG_WALL;
+			tex = Tex.TEXREG_WALL;
 			
 			gl.normal(0.0f, -1.0f, 0.0f);
 			gl.texCoord(tex.getU(), tex.getV());
@@ -39,7 +38,7 @@ public class WallTile extends Tile {
 			gl.texCoord(tex.getU2(), tex.getV2());
 			gl.vertex(i+1, j, 1.0f);
 		}
-		tex = Kwirk.TEXREG_CEIL;
+		tex = Tex.TEXREG_CEIL;
 		
 		gl.normal(0.0f, 0.0f, 1.0f);
 		gl.texCoord(tex.getU(), tex.getV());
