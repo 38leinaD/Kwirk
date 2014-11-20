@@ -2,10 +2,15 @@ package de.fruitfly.kwirk.tile;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import de.fruitfly.kwirk.Entity;
 import de.fruitfly.kwirk.SurfaceRenderer;
 import de.fruitfly.kwirk.Tex;
 
-public class EditTile extends Tile {
+public class EditTile extends RefTile {
+
+	public EditTile(Entity parent) {
+		super(parent);
+	}
 
 	public void render(SurfaceRenderer gl, int i, int j) {
 		TextureRegion tex;

@@ -46,12 +46,16 @@ public class Ed implements InputProcessor {
 			if (Gdx.input.isButtonPressed(0)) {
 				if (isWorldTile(selectedTile.x, selectedTile.y)) {
 					Tile t = Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y];
-					if (t instanceof RefTile) {
-						Entity e = ((RefTile) t).getParent();
+					if (t != null) {
+						Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y] = null;
+					}
+					RefTile rt = Kwirk.level.getEntityTileMap()[selectedTile.x][selectedTile.y];
+					if (rt != null) {
+						Entity e = rt.getParent();
 						e.removeFromLevel();
 					}
 					else {
-						Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y] = null;
+						
 					}
 				}
 			}
@@ -82,7 +86,8 @@ public class Ed implements InputProcessor {
 			if (Gdx.input.isButtonPressed(0)) {
 				if (isWorldTile(selectedTile.x, selectedTile.y)) {
 					Tile t = Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y];
-					if (t != null) {
+					Tile rt = Kwirk.level.getEntityTileMap()[selectedTile.x][selectedTile.y];
+					if (t != null || rt != null) {
 						//System.out.println("Tile already occupied by " + t);
 					}
 					else if (objectInstance instanceof Tile){
@@ -148,31 +153,10 @@ public class Ed implements InputProcessor {
 				objectInstance = new Player(selectedTile.x, selectedTile.y, Tex.TEXREG_KWIRK);
 			}
 			else if (c == Pusher.class) {
-				objectInstance = new EditTile();
+				objectInstance = new EditTile(null);
 			}
 		}
 
-		public void render() {
-			/*
-			if (objectInstance != null) {
-				Kwirk.TEXTURE_GAME_ART.bind();
-				if (objectInstance instanceof Tile) {
-					Tile t = (Tile) objectInstance;
-					G.gl.begin(new Matrix4().idt(), G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
-					t.render(G.gl, selectedTile.x, selectedTile.y);
-					G.gl.end();
-				}
-				else if (objectInstance instanceof Entity) {
-					Entity e = (Entity) objectInstance;
-					e.render();
-				}
-				else {
-					throw new RuntimeException("Unkown object class");
-				}
-			}
-			*/
-		}
-		
 		public String getName() {
 			return "Create " + objectInstance;
 		}
@@ -184,8 +168,8 @@ public class Ed implements InputProcessor {
 					int[][] bitmap = new int[createMax.x - createMin.x + 1][createMax.y - createMin.y + 1];
 					for (int x=createMin.x; x<=createMax.x; x++) {
 						for (int y=createMin.y; y<=createMax.y; y++) {
-							if (Kwirk.level.getTileMap()[x][y] instanceof EditTile) {
-								Kwirk.level.getTileMap()[x][y] = null;
+							if (Kwirk.level.getEntityTileMap()[x][y] instanceof EditTile) {
+								Kwirk.level.getEntityTileMap()[x][y] = null;
 								bitmap[x - createMin.x][y - createMin.y] = 1;
 							}
 							

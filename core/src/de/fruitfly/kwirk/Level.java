@@ -21,11 +21,13 @@ import de.fruitfly.kwirk.tile.WaterTile;
 
 public class Level {
 	private Tile[][] tileMap;
+	private RefTile[][] entityTileMap;
 	private List<Entity> entities = new LinkedList<Entity>();
 	public String name = "testlevel";
 	
 	public Level(int w, int h) {
 		tileMap = new Tile[w][h];
+		entityTileMap = new RefTile[w][h];
 	}
 	
 	public void tick() {
@@ -239,6 +241,10 @@ public class Level {
 		return tileMap;
 	}
 
+	public RefTile[][] getEntityTileMap() {
+		return entityTileMap;
+	}
+	
 	public List<Entity> getEntities() {
 		return entities;
 	}

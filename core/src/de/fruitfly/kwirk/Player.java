@@ -133,7 +133,7 @@ public class Player extends Entity {
 			return;
 		}
 		
-		Kwirk.level.getTileMap()[x][y] = null;
+		Kwirk.level.getEntityTileMap()[x][y] = null;
 		interpX = x;
 		interpY = y;
 		velX = xoff * 0.05f;
@@ -142,15 +142,13 @@ public class Player extends Entity {
 		y = y + yoff;
 		moving = true;
 		
-		if (!(Kwirk.level.getTileMap()[x][y] instanceof ExitTile)) {
-			Kwirk.level.getTileMap()[x][y] = new RefTile(this);
-		}
+		Kwirk.level.getEntityTileMap()[x][y] = new RefTile(this);
 	}
 	
 	private void push(int playerX, int playerY, int pushX, int pushY) {
-		Tile t = Kwirk.level.getTileMap()[playerX+pushX][playerY+pushY];
-		if (t instanceof RefTile) {
-			Entity entity = ((RefTile) t).getParent();
+		RefTile t = Kwirk.level.getEntityTileMap()[playerX+pushX][playerY+pushY];
+		if (t != null) {
+			Entity entity = t.getParent();
 			if (entity instanceof Tri) {
 				/*Tri tri = (Tri) entity;
 				if (playerX == tri.x - 1 && (playerY == tri.y - 1 || playerY == tri.y + 1)) {
@@ -166,7 +164,8 @@ public class Player extends Entity {
 	}
 
 	private boolean isBlocked(int x, int y) {
-		return Kwirk.level.getTileMap()[x][y] != null && Kwirk.level.getTileMap()[x][y].blocks(this);
+		return (Kwirk.level.getTileMap()[x][y] != null && Kwirk.level.getTileMap()[x][y].blocks(this)) ||
+				(Kwirk.level.getEntityTileMap()[x][y] != null && Kwirk.level.getEntityTileMap()[x][y].getParent().blocks(this));
 	}
 
 	public void render() {

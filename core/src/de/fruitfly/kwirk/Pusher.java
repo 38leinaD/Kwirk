@@ -29,12 +29,21 @@ public class Pusher extends Entity {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				level.getTileMap()[this.x+x][this.y+y] = new RefTile(this);
+				level.getEntityTileMap()[this.x+x][this.y+y] = new RefTile(this);
 			}
 		}
 	}
 	
 	private void clearRefTiles(Level level) {
+		for (int x=0; x<bitmap.length; x++) {
+			for (int y=0; y<bitmap[0].length; y++) {
+				if (bitmap[x][y]==0) continue;
+				level.getEntityTileMap()[this.x+x][this.y+y] = null;
+			}
+		}
+	}
+	
+	private void clearWaterTiles(Level level) {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
@@ -98,7 +107,8 @@ public class Pusher extends Entity {
 			if (z<=-1.0f) {
 				z=-1.0f;
 				floating = false;
-				clearRefTiles(Kwirk.level);
+				clearWaterTiles(Kwirk.level);
+				removeFromLevel();
 			}
 		}
 	}
