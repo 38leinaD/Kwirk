@@ -4,12 +4,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.Texture.TextureFilter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,8 +22,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
 import de.fruitfly.kwirk.tile.ExitTile;
+import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
-import de.fruitfly.kwirk.tile.WallTile;
 
 public class Kwirk extends ApplicationAdapter {
 	public static SpriteBatch batch;
@@ -38,11 +37,13 @@ public class Kwirk extends ApplicationAdapter {
 	public static TextureRegion TEXREG_STAIRS;
 
 	public static TextureRegion TEXREG_FLOOR;
+	public static TextureRegion TEXREG_WATER;
+
 	public static TextureRegion TEXREG_TRI_CENTER;
 	public static TextureRegion TEXREG_TRI_ARM;
-	public static TextureRegion TEXREG_KWIRK_FACE;
-	public static TextureRegion TEXREG_KWIRK_BLINK;
-	public static TextureRegion TEXREG_KWIRK_SIDE;
+	public static TextureRegion[] TEXREG_KWIRK;
+	public static TextureRegion[] TEXREG_KWURK;
+
 	public static TextureRegion[] TEXREG_BAR;
 
 	public static BitmapFont font;
@@ -50,8 +51,6 @@ public class Kwirk extends ApplicationAdapter {
 	public static TextureRegion[] TEXREG_EXIT_PULSE;
 
 	public static int ticker;
-	
-	public static Player player;
 	
 	public static List<Ticks> tickers = new LinkedList<Ticks>();
 	
@@ -93,6 +92,9 @@ public class Kwirk extends ApplicationAdapter {
 		TEXREG_FLOOR = new TextureRegion(TEXTURE_GAME_ART, 32, 0, 16, 16);
 		TEXREG_FLOOR.flip(false, true);
 		
+		TEXREG_WATER = new TextureRegion(TEXTURE_GAME_ART, 64, 32, 16, 16);
+		TEXREG_WATER.flip(false, true);
+		
 		TEXREG_DARK = new TextureRegion(TEXTURE_GAME_ART, 0, 48, 16, 16);
 		TEXREG_DARK.flip(false, true);
 		
@@ -102,14 +104,26 @@ public class Kwirk extends ApplicationAdapter {
 		TEXREG_TRI_ARM = new TextureRegion(TEXTURE_GAME_ART, 64, 0, 16, 16);
 		TEXREG_TRI_ARM.flip(false, true);
 		
-		TEXREG_KWIRK_FACE = new TextureRegion(TEXTURE_GAME_ART, 0, 16, 16, 16);
-		TEXREG_KWIRK_FACE.flip(false, true);
+		TEXREG_KWIRK = new TextureRegion[3];
+		TEXREG_KWIRK[0] = new TextureRegion(TEXTURE_GAME_ART, 0, 16, 16, 16);
+		TEXREG_KWIRK[0].flip(false, true);
 		
-		TEXREG_KWIRK_BLINK = new TextureRegion(TEXTURE_GAME_ART, 0, 32, 16, 16);
-		TEXREG_KWIRK_BLINK.flip(false, true);
+		TEXREG_KWIRK[1] = new TextureRegion(TEXTURE_GAME_ART, 0, 32, 16, 16);
+		TEXREG_KWIRK[1].flip(false, true);
 		
-		TEXREG_KWIRK_SIDE = new TextureRegion(TEXTURE_GAME_ART, 16, 16, 16, 16);
-		TEXREG_KWIRK_SIDE.flip(false, true);
+		TEXREG_KWIRK[2] = new TextureRegion(TEXTURE_GAME_ART, 16, 16, 16, 16);
+		TEXREG_KWIRK[2].flip(false, true);
+		
+		TEXREG_KWURK = new TextureRegion[3];
+		TEXREG_KWURK[0] = new TextureRegion(TEXTURE_GAME_ART, 0, 64, 16, 16);
+		TEXREG_KWURK[0].flip(false, true);
+		
+		TEXREG_KWURK[1] = new TextureRegion(TEXTURE_GAME_ART, 0, 80, 16, 16);
+		TEXREG_KWURK[1].flip(false, true);
+		
+		TEXREG_KWURK[2] = new TextureRegion(TEXTURE_GAME_ART, 16, 64, 16, 16);
+		TEXREG_KWURK[2].flip(false, true);
+		
 		
 		TEXREG_STAIRS = new TextureRegion(TEXTURE_GAME_ART, 48, 32, 16, 16);
 		TEXREG_STAIRS.flip(false, true);
@@ -197,7 +211,7 @@ public class Kwirk extends ApplicationAdapter {
 		editor.tick();
 		
 		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-		Gdx.gl.glClearColor(188/255f, 188/255f, 188/255f, 1);
+		Gdx.gl.glClearColor(104/255f, 136/255f, 252/255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 		Gdx.gl.glDisable(GL20.GL_CULL_FACE);
@@ -249,7 +263,7 @@ public class Kwirk extends ApplicationAdapter {
 			for (int j=0; j<level.tileMap[0].length; j++) {
 				Tile t = level.tileMap[i][j];
 				
-				if (t == null || !(t instanceof ExitTile)) {
+				if (t == null || (t instanceof RefTile)) {
 					// floor
 					TextureRegion tex;
 					tex = TEXREG_FLOOR;

@@ -2,12 +2,15 @@ package de.fruitfly.kwirk;
 
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
+import de.fruitfly.kwirk.tile.WaterTile;
 
 public class Pusher extends Entity {
 	protected int[][] bitmap;
 	
 	private static int texIndexer = 0;
 	private int texIndex;
+	private boolean floating = false;
+	private float z = 0;
 	
 	public Pusher(int x, int y, int[][] bitmap) {
 		super(x, y);
@@ -61,7 +64,7 @@ public class Pusher extends Entity {
 						return;
 					}
 				}
-				else {
+				else if (t.blocks(this)) {
 					// blocked
 					return;
 				}
@@ -71,15 +74,42 @@ public class Pusher extends Entity {
 		clearRefTiles(Kwirk.level);
 		this.x += xoff;
 		this.y += yoff;
+		checkFloating();
 		addRefTiles(Kwirk.level);
 	}
 	
+	private void checkFloating() {
+		floating = true;
+		for (int x=0; x<bitmap.length; x++) {
+			for (int y=0; y<bitmap[0].length; y++) {
+				if (bitmap[x][y]==0) continue;
+				Tile t = Kwirk.level.tileMap[this.x+x][this.y+y];
+				if (!(t instanceof WaterTile)) {
+					floating = false;
+					return;
+				}
+			}
+		}
+	}
+
+	@Override
+	public void tick() {
+		if (floating) {
+			z-=0.03f;
+			if (z<=-1.0f) {
+				z=-1.0f;
+				floating = false;
+				clearRefTiles(Kwirk.level);
+			}
+		}
+	}
+
 	@Override
 	public void render() {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				this.renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+x, this.y+y);				
+				this.renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+x, this.y+y, z);				
 			}
 		}
 	}

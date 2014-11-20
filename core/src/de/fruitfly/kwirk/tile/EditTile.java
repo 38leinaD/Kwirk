@@ -6,6 +6,7 @@ import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.SurfaceRenderer;
 
 public class EditTile extends Tile {
+
 	public void render(SurfaceRenderer gl, int i, int j) {
 		TextureRegion tex;
 		tex = Kwirk.TEXREG_BAR[2];

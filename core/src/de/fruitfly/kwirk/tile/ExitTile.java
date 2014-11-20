@@ -2,6 +2,7 @@ package de.fruitfly.kwirk.tile;
 
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+import de.fruitfly.kwirk.Entity;
 import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.SurfaceRenderer;
 import de.fruitfly.kwirk.Ticks;
@@ -68,5 +69,9 @@ public class ExitTile extends Tile implements Ticks {
 		gl.normal(0.0f, 0.0f, 1.0f);
 		gl.texCoord(tex.getU2(), tex.getV2());
 		gl.vertex(x + 1, y+1, 0.0f);
+	}
+	
+	public boolean blocks(Entity e) {
+		return false;
 	}
 }

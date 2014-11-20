@@ -18,12 +18,16 @@ public class Player extends Entity {
 	private boolean moving = false;
 	private static Matrix4 modelTransform = new Matrix4().idt();
 	private int ticker;
-	public Player(int x, int y) {
+	private TextureRegion[] skin;
+	
+	public boolean isControlled = false;
+	public Player(int x, int y, TextureRegion[] skin) {
 		super(x, y);
 		this.interpX = x;
 		this.interpY = y;
 		this.newAngle = 180;
 		this.angle = this.newAngle;
+		this.skin = skin;
 	}
 
 	public void tick() {
@@ -171,7 +175,7 @@ public class Player extends Entity {
 	}
 
 	private boolean isBlocked(int x, int y) {
-		return Kwirk.level.tileMap[x][y] != null && !(Kwirk.level.tileMap[x][y] instanceof ExitTile);
+		return Kwirk.level.tileMap[x][y] != null && Kwirk.level.tileMap[x][y].blocks(this);
 	}
 
 	public void render() {
@@ -202,10 +206,10 @@ public class Player extends Entity {
 		G.gl.begin(modelTransform, G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
 		
 		if (ticker % 80 < 5) {
-			tex = Kwirk.TEXREG_KWIRK_BLINK;
+			tex = skin[1];
 		}
 		else {
-			tex = Kwirk.TEXREG_KWIRK_FACE;
+			tex = skin[0];
 		}
 		// back
 		G.gl.normal(0.0f, 1.0f, 0.0f);
@@ -232,7 +236,7 @@ public class Player extends Entity {
 		G.gl.texCoord(tex.getU2(), tex.getV2());
 		G.gl.vertex(-0.5f, 0.5f, 0.999f);
 		
-		tex = Kwirk.TEXREG_KWIRK_SIDE;
+		tex = skin[2];
 		
 		// front
 		G.gl.normal(0.0f, -1.0f, 0.0f);

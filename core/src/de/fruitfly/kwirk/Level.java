@@ -3,15 +3,15 @@ package de.fruitfly.kwirk;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
 import de.fruitfly.kwirk.tile.WallTile;
+import de.fruitfly.kwirk.tile.WaterTile;
 
 public class Level {
 	public Tile[][] tileMap;
@@ -52,6 +52,9 @@ public class Level {
 					else if (t instanceof ExitTile) {
 						type = "ExitTile";
 					}
+					else if (t instanceof WaterTile) {
+						type = "WaterTile";
+					}
 					
 					if (type != null) f.writeString("t: " + x + "," + y + " " + type + "\n", true);
 				}
@@ -89,6 +92,7 @@ public class Level {
 	public static Level load(FileHandle f) {
 		String str = f.readString();
 		Level l = null;
+		boolean firstPlayer = true;
 		for (String line : str.split("\n")) {
 			if (line.startsWith("size:")) {
 				String[] st = line.split(" ")[1].split(",");
@@ -112,6 +116,9 @@ public class Level {
 				else if (type.equals("ExitTile")) {
 					t = new ExitTile();
 				}
+				else if (type.equals("WaterTile")) {
+					t = new WaterTile();
+				}
 				l.tileMap[x][y] = t;
 			}
 			else if (line.startsWith("e:")) {
@@ -121,8 +128,12 @@ public class Level {
 				String type = line.split(" ")[2];
 				
 				if (type.startsWith("Player")) {
-					Player p = new Player(x, y);
+					Player p = new Player(x, y, firstPlayer ? Kwirk.TEXREG_KWIRK : Kwirk.TEXREG_KWURK);
 					p.addToLevel(l);
+					if (firstPlayer) {
+						p.isControlled = true;
+						firstPlayer = false;
+					}
 				}
 				else if (type.startsWith("Pusher")) {
 					String bm = type.substring(7, type.length()-1);

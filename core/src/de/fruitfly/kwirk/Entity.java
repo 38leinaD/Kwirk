@@ -57,9 +57,9 @@ public class Entity {
 		this.y = y;
 	}
 	
-	protected void renderBlock(TextureRegion tex, int x, int y) {
+	protected void renderBlock(TextureRegion tex, int x, int y, float z) {
 		modelTransform.idt();
-		modelTransform.translate(x, y, 0.0f);
+		modelTransform.translate(x, y, z);
 		
 		G.gl.begin(modelTransform, G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
 		

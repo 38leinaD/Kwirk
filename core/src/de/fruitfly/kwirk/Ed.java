@@ -1,8 +1,6 @@
 package de.fruitfly.kwirk;
 
 import java.awt.Point;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,7 +9,6 @@ import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -22,6 +19,7 @@ import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
 import de.fruitfly.kwirk.tile.WallTile;
+import de.fruitfly.kwirk.tile.WaterTile;
 
 public class Ed implements InputProcessor {
 	
@@ -73,6 +71,7 @@ public class Ed implements InputProcessor {
 		public CreateMode() {
 			OBJS.add(WallTile.class);
 			OBJS.add(ExitTile.class);
+			OBJS.add(WaterTile.class);
 			OBJS.add(Player.class);
 			OBJS.add(Pusher.class);
 
@@ -141,9 +140,12 @@ public class Ed implements InputProcessor {
 			}
 			else if (c == ExitTile.class) {
 				objectInstance = new ExitTile();
-						}
+			}
+			else if (c == WaterTile.class) {
+				objectInstance = new WaterTile();
+			}
 			else if (c == Player.class) {
-				objectInstance = new Player(selectedTile.x, selectedTile.y);
+				objectInstance = new Player(selectedTile.x, selectedTile.y, Kwirk.TEXREG_KWIRK);
 			}
 			else if (c == Pusher.class) {
 				objectInstance = new EditTile();

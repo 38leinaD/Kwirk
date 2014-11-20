@@ -23,8 +23,8 @@ public class Bar extends Entity {
 	}
 
 	public void render() {
-		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x, this.y);
-		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+1, this.y);
+		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x, this.y, 0.0f);
+		renderBlock(Kwirk.TEXREG_BAR[texIndex], this.x+1, this.y, 0.0f);
 	}
 	
 	public void tick() {
