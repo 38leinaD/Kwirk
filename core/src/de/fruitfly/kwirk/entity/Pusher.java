@@ -103,6 +103,10 @@ public class Pusher extends Entity {
 		}
 	}
 
+	public int[][] getBitmap() {
+		return bitmap;
+	}
+	
 	@Override
 	public void tick() {
 		if (floating) {

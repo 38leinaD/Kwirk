@@ -149,14 +149,14 @@ public class Level {
 				Pusher p = (Pusher) e;
 				StringBuffer sb = new StringBuffer();
 				
-				for (int xx=0; xx<p.bitmap.length; xx++) {
-					for (int yy=0; yy<p.bitmap[0].length; yy++) {
-						sb.append(p.bitmap[xx][yy]);
-						if (yy != p.bitmap[0].length-1) {
+				for (int xx=0; xx<p.getBitmap().length; xx++) {
+					for (int yy=0; yy<p.getBitmap()[0].length; yy++) {
+						sb.append(p.getBitmap()[xx][yy]);
+						if (yy != p.getBitmap()[0].length-1) {
 							sb.append(",");
 						}
 					}
-					if (xx != p.bitmap.length-1) {
+					if (xx != p.getBitmap().length-1) {
 						sb.append(";");
 					}
 				}
