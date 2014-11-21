@@ -36,20 +36,20 @@ public class Player extends Entity {
 		ticker++;
 		if (Gdx.input.isKeyPressed(Keys.LEFT) || Kwirk.touchEventLeft) {
 			this.rotate(Keys.LEFT);
-			this.move(-1, 0);
+			this.tryMove(-1, 0);
 		}
 		else if (Gdx.input.isKeyPressed(Keys.RIGHT) || Kwirk.touchEventRight) {
 			this.rotate(Keys.RIGHT);
-			this.move(1, 0);
+			this.tryMove(1, 0);
 		}
 		
 		if (Gdx.input.isKeyPressed(Keys.UP) || Kwirk.touchEventUp) {
 			this.rotate(Keys.UP);
-			this.move(0, 1);
+			this.tryMove(0, 1);
 		}
 		else if (Gdx.input.isKeyPressed(Keys.DOWN) || Kwirk.touchEventDown) {
 			this.rotate(Keys.DOWN);
-			this.move(0, -1);
+			this.tryMove(0, -1);
 		}
 
 		interpolateMove();
@@ -111,7 +111,7 @@ public class Player extends Entity {
 		interpX += velX;
 		interpY += velY;
 		
-		if (Math.abs(x - interpX) <= 0.03f && Math.abs(y - interpY) <= 0.03f) {
+		if (Math.abs(x - interpX) <= 0.1f && Math.abs(y - interpY) <= 0.1f) {
 			moving = false;
 			velX = 0.0f;
 			velY = 0.0f;
@@ -127,7 +127,7 @@ public class Player extends Entity {
 		}
 	}
 
-	private void move(int xoff, int yoff) {
+	private void tryMove(int xoff, int yoff) {
 		if (moving) return;
 
 		if (isBlocked(x + xoff, y + yoff)) {
@@ -135,11 +135,15 @@ public class Player extends Entity {
 			return;
 		}
 		
+		move(xoff, yoff);
+	}
+	
+	protected void move(int xoff, int yoff) {
 		Kwirk.level.getEntityTileMap()[x][y] = null;
 		interpX = x;
 		interpY = y;
-		velX = xoff * 0.05f;
-		velY = yoff * 0.05f;
+		velX = xoff * 0.08f;
+		velY = yoff * 0.08f;
 		x = x + xoff;
 		y = y + yoff;
 		moving = true;
@@ -160,7 +164,7 @@ public class Player extends Entity {
 			}
 			else if (entity instanceof Pusher) {
 				Pusher p = (Pusher) entity;
-				p.push(pushX, pushY);
+				if (p.push(pushX, pushY)) move(pushX, pushY);;
 			}
 			else if (entity instanceof Rotator) {
 				Rotator r = (Rotator) entity;

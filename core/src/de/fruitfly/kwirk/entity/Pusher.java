@@ -55,29 +55,20 @@ public class Pusher extends Entity {
 		}
 	}
 	
-	public void push(int xoff, int yoff) {
+	public boolean push(int xoff, int yoff) {
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
 				Tile t = Kwirk.level.getTileMap()[this.x+x+xoff][this.y+y+yoff];
-				if (t == null) {
-					// unblocked
-					continue;
+				if (t != null && t.blocks(this)) {
+					// blocking tile
+					return false;
 				}
-				else if (t instanceof RefTile) {
-					RefTile rt = (RefTile) t;
-					if (rt.getParent() == this) {
-						// false positive; blocked by itself
-						continue;
+				else {
+					RefTile rt = Kwirk.level.getEntityTileMap()[this.x+x+xoff][this.y+y+yoff];
+					if (rt != null && rt.getParent() != this) {
+						return false;
 					}
-					else {
-						// blocked by entity
-						return;
-					}
-				}
-				else if (t.blocks(this)) {
-					// blocked
-					return;
 				}
 			}
 		}
@@ -87,6 +78,7 @@ public class Pusher extends Entity {
 		this.y += yoff;
 		checkFloating();
 		addRefTiles(Kwirk.level);
+		return true;
 	}
 	
 	private void checkFloating() {

@@ -3,6 +3,7 @@ package de.fruitfly.kwirk.entity;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Matrix4;
+import com.badlogic.gdx.math.Vector3;
 
 import de.fruitfly.kwirk.G;
 import de.fruitfly.kwirk.Kwirk;
@@ -67,6 +68,142 @@ public class Entity {
 	protected void renderBlock(TextureRegion tex, int x, int y, float z) {
 		modelTransform.idt();
 		modelTransform.translate(x, y, z);
+		
+		G.gl.begin(modelTransform, G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
+		
+		// front
+		G.gl.normal(0.0f, -1.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV());
+		G.gl.vertex(0, 0, 0.0f);
+		
+		G.gl.normal(0.0f, -1.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(1, 0, 0.0f);
+		
+		G.gl.normal(0.0f, -1.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(0, 0, 0.999f);
+		
+		G.gl.normal(0.0f, -1.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(0, 0, 0.999f);
+		
+		G.gl.normal(0.0f, -1.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(1, 0, 0.0f);
+		
+		G.gl.normal(0.0f, -1.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV2());
+		G.gl.vertex(1, 0, 0.999f);
+		
+		// back
+		G.gl.normal(0.0f, 1.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV());
+		G.gl.vertex(1, 1, 0.0f);
+		
+		G.gl.normal(0.0f, 1.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(0, 1, 0.0f);
+		
+		G.gl.normal(0.0f, 1.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(1, 1, 0.999f);
+		
+		G.gl.normal(0.0f, 1.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(1, 1, 0.999f);
+		
+		G.gl.normal(0.0f, 1.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(0, 1, 0.0f);
+		
+		G.gl.normal(0.0f, 1.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV2());
+		G.gl.vertex(0, 1, 0.999f);
+		
+		// left
+		G.gl.normal(-1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV());
+		G.gl.vertex(0, 1, 0.0f);
+		
+		G.gl.normal(-1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(0, 0, 0.0f);
+		
+		G.gl.normal(-1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(0, 1, 0.999f);
+		
+		G.gl.normal(-1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(0, 1, 0.999f);
+		
+		G.gl.normal(-1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(0, 0, 0.0f);
+		
+		G.gl.normal(-1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV2());
+		G.gl.vertex(0, 0, 0.999f);
+		
+		// right
+		G.gl.normal(1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV());
+		G.gl.vertex(1, 0, 0.0f);
+		
+		G.gl.normal(1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(1, 1, 0.0f);
+		
+		G.gl.normal(1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(1, 0, 0.999f);
+		
+		G.gl.normal(1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(1, 0, 0.999f);
+		
+		G.gl.normal(1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(1, 1, 0.0f);
+		
+		G.gl.normal(1.0f, 0.0f, 0.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV2());
+		G.gl.vertex(1, 1, 0.999f);
+		
+		// top
+		G.gl.normal(0.0f, 0.0f, 1.0f);
+		G.gl.texCoord(tex.getU(), tex.getV());
+		G.gl.vertex(0, 0, 0.999f);
+		
+		G.gl.normal(0.0f, 0.0f, 1.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(1, 0, 0.999f);
+		
+		G.gl.normal(0.0f, 0.0f, 1.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(0, 1, 0.999f);
+		
+		G.gl.normal(0.0f, 0.0f, 1.0f);
+		G.gl.texCoord(tex.getU(), tex.getV2());
+		G.gl.vertex(0, 1, 0.999f);
+		
+		G.gl.normal(0.0f, 0.0f, 1.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV());
+		G.gl.vertex(1, 0, 0.999f);
+		
+		G.gl.normal(0.0f, 0.0f, 1.0f);
+		G.gl.texCoord(tex.getU2(), tex.getV2());
+		G.gl.vertex(1, 1, 0.999f);
+		
+		G.gl.end();
+	}
+	
+	protected void renderBlock(TextureRegion tex, int x, int y, float z, int xoff, int yoff, float angle) {
+		modelTransform.idt();
+		modelTransform.translate(x+0.5f, y+0.5f, z);
+		modelTransform.rotate(new Vector3(0.0f, 0.0f, 1.0f), angle);
+		modelTransform.translate(xoff-0.5f, yoff-0.5f, 0.0f);
 		
 		G.gl.begin(modelTransform, G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
 		
