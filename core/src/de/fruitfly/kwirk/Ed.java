@@ -208,19 +208,20 @@ public class Ed implements InputProcessor {
 					int topY = createMax.y - centerY;
 					int bottomY = centerY - createMin.y;
 					int sideY = Math.max(topY, bottomY);
+					int side = Math.max(sideX, sideY);
 
-					int[][] bitmap = new int[2*sideX+1][2*sideY+1];
+					int[][] bitmap = new int[2*side+1][2*side+1];
 
-					for (int x=centerX-leftX; x<=centerX+rightX; x++) {
-						for (int y=centerY-bottomY; y<=centerY+topY; y++) {
+					for (int x=centerX-side; x<=centerX+side; x++) {
+						for (int y=centerY-side; y<=centerY+side; y++) {
 							if (Kwirk.level.getEntityTileMap()[x][y] instanceof EditTile) {
 								Kwirk.level.getEntityTileMap()[x][y] = null;
-								bitmap[x-(centerX-leftX)][y-(centerY-bottomY)] = 1;
+								bitmap[x-(centerX-side)][y-(centerY-side)] = 1;
 							}
 						}
 					}
 					
-					Rotator r = new Rotator(createMin.x, createMin.y, bitmap);
+					Rotator r = new Rotator(centerX, centerY, bitmap);
 					r.addToLevel(Kwirk.level);
 					
 					createMin = createMax = null;
@@ -303,6 +304,8 @@ public class Ed implements InputProcessor {
 			}
 			Kwirk.font.draw(Kwirk.batch, i +") " + m.getName(), 10, 10+i*15);
 		}
+		Kwirk.font.setColor(Color.WHITE);
+		Kwirk.font.draw(Kwirk.batch, selectedTile != null ? "(" + selectedTile.x + "," + selectedTile.y + ")" : "", 10, 10+2*15);
 		Kwirk.batch.end();
 		
 		G.sr.setProjectionMatrix(Kwirk.projectionMatrix2D);

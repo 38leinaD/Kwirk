@@ -118,9 +118,6 @@ t: 9,0 WallTile
 t: 9,1 WallTile
 t: 9,2 WallTile
 t: 9,3 WallTile
-t: 9,10 WallTile
-t: 9,11 WallTile
-t: 9,12 WallTile
 t: 9,14 WallTile
 t: 9,15 WallTile
 t: 9,16 WallTile
@@ -128,9 +125,6 @@ t: 10,0 WallTile
 t: 10,1 WallTile
 t: 10,2 WallTile
 t: 10,3 WallTile
-t: 10,10 WallTile
-t: 10,11 WallTile
-t: 10,12 WallTile
 t: 10,14 WallTile
 t: 10,15 WallTile
 t: 10,16 WallTile
@@ -138,9 +132,6 @@ t: 11,0 WallTile
 t: 11,1 WallTile
 t: 11,2 WallTile
 t: 11,3 WallTile
-t: 11,10 WallTile
-t: 11,11 WallTile
-t: 11,12 WallTile
 t: 11,14 WallTile
 t: 11,15 WallTile
 t: 11,16 WallTile
@@ -260,5 +251,5 @@ t: 19,13 WallTile
 t: 19,14 WallTile
 t: 19,15 WallTile
 t: 19,16 WallTile
-e: 10,7 Player
-e: 6,6 Rotator[1,1,0;0,1,0;0,0,0]
+e: 10,10 Player
+e: 7,9 Rotator[0,0,0,0,0;0,0,0,0,0;1,1,1,0,0;0,0,1,0,0;0,0,0,0,0]

@@ -115,6 +115,20 @@ public class Level {
 		for (Entity e : entities) {
 			e.render();
 		}
+		
+		
+		G.sr.setColor(Color.RED);
+		G.sr.begin();
+		for (int x = 0; x < this.entityTileMap.length; x++) {
+			for (int y = 0; y < this.entityTileMap[0].length; y++) {
+				Tile t = this.entityTileMap[x][y];
+				if (t != null) {
+					G.sr.box(x, y, 1.0f, 1.0f, 1.0f, 1.0f);
+				}
+			}
+		}
+		G.sr.end();
+
 	}
 	
 	public void save() {

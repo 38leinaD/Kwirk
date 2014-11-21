@@ -162,6 +162,10 @@ public class Player extends Entity {
 				Pusher p = (Pusher) entity;
 				p.push(pushX, pushY);
 			}
+			else if (entity instanceof Rotator) {
+				Rotator r = (Rotator) entity;
+				r.push(this, pushX, pushY);
+			}
 		}
 	}
 

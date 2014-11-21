@@ -28,23 +28,29 @@ public class Rotator extends Entity {
 	}
 	
 	private void addRefTiles(Level level) {
-		int sideX = (bitmap.length - 1)/2;
-		int sideY = (bitmap[0].length - 1)/2;
+		int s = (bitmap.length)/2;
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				level.getEntityTileMap()[getX()-sideX+x][getY()-sideY+y] = new RefTile(this);
+				level.getEntityTileMap()[getX()-s+x][getY()-s+y] = new RefTile(this);
 			}
 		}
 	}
 	
 	private void clearRefTiles(Level level) {
-		int sideX = (bitmap.length - 1)/2;
-		int sideY = (bitmap[0].length - 1)/2;
+		int s = (bitmap.length)/2;
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				level.getEntityTileMap()[getX()-sideX+x][getY()-sideY+y] = null;
+				level.getEntityTileMap()[getX()-s+x][getY()-s+y] = null;
+			}
+		}
+	}
+	
+	private static void resetBitmap(int[][] bm) {
+		for (int x=0; x<bm.length; x++) {
+			for (int y=0; y<bm[0].length; y++) {
+				bm[x][y]=0;
 			}
 		}
 	}
@@ -53,17 +59,39 @@ public class Rotator extends Entity {
 		if (xoff != 0) {
 			if (xoff > 0 && p.getY() > getY()) {
 				// rotate +90deg
+				System.out.println("a+90");
 			}
 			else {
 				// rotate -90deg
+				System.out.println("b-90");
+
 			}
 		}
 		else if (yoff != 0) {
 			if (yoff > 0 && p.getX() > getX()) {
 				// rotate +90deg
+				System.out.println("c+90");
+				resetBitmap(tmpBitmap);
+				clearRefTiles(Kwirk.level);
+				int s = bitmap.length/2;
+				for (int x=0; x<bitmap.length; x++) {
+					for (int y=0; y<bitmap[0].length; y++) {
+						int xx = x - s;
+						int yy = y - s;
+						int fx = (xx*0 + yy*-1) + s;
+						int fy = (xx*1 + yy*0) + s;
+						tmpBitmap[fx][fy] = bitmap[x][y];
+					}
+				}
+				int[][] tmp = bitmap;
+				bitmap = tmpBitmap;
+				tmpBitmap = tmp;
+				addRefTiles(Kwirk.level);
 			}
 			else {
 				// rotate -90deg
+				System.out.println("d-90");
+
 			}
 		}
 		/*
@@ -112,10 +140,11 @@ public class Rotator extends Entity {
 
 	@Override
 	public void render() {
+		int s = bitmap.length/2;
 		for (int x=0; x<bitmap.length; x++) {
 			for (int y=0; y<bitmap[0].length; y++) {
 				if (bitmap[x][y]==0) continue;
-				this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x+x, this.y+y, 0.0f);				
+				this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x-s+x, this.y-s+y, 0.0f);				
 			}
 		}
 	}
