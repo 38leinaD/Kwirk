@@ -13,6 +13,7 @@ import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
+import de.fruitfly.kwirk.tile.WaterTile;
 
 public class Player extends Entity {
 	private int newAngle;
@@ -152,12 +153,17 @@ public class Player extends Entity {
 	}
 	
 	private void push(int playerX, int playerY, int pushX, int pushY) {
-		RefTile t = Kwirk.level.getEntityTileMap()[playerX+pushX][playerY+pushY];
-		if (t != null) {
-			Entity entity = t.getParent();
+		RefTile rt = Kwirk.level.getEntityTileMap()[playerX+pushX][playerY+pushY];
+		Tile t = Kwirk.level.getTileMap()[playerX+pushX][playerY+pushY];
+		
+		// we cannot push when there is a watertile where we want to push as we cannot stand here.
+		if (t instanceof WaterTile) return;
+		
+		if (rt != null) {
+			Entity entity = rt.getParent();
 			if (entity instanceof Pusher) {
 				Pusher p = (Pusher) entity;
-				if (p.push(pushX, pushY)) move(pushX, pushY);;
+				if (p.push(pushX, pushY)) tryMove(pushX, pushY);;
 			}
 			else if (entity instanceof Rotator) {
 				Rotator r = (Rotator) entity;
@@ -191,6 +197,7 @@ public class Player extends Entity {
 			modelTransform.scale(MathUtils.sin(t), MathUtils.sin(t), 1+(10-10*MathUtils.sin(t)));
 		}
 		else if (exitTicker == 0) {
+			Kwirk.getInstance().levelCompleted(Kwirk.level);
 			return;
 		}
 		modelTransform.rotate(new Vector3(0.0f, 0.0f, 1.0f), angle);

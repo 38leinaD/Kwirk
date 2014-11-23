@@ -5,7 +5,9 @@ import java.util.List;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Files.FileType;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -38,8 +40,16 @@ public class Kwirk extends ApplicationAdapter {
 
 	public Ed editor;
 
+	private String[] levels = {
+		"levels/original/level01.txt",
+		"levels/original/level02.txt",
+		"levels/original/level03.txt",
+		"levels/original/level04.txt"
+	};
+	
 	@Override
 	public void create() {
+		_instance = this;
 		batch = new SpriteBatch();
 
 		Texture fontTex = new Texture(Gdx.files.internal("04.png"));
@@ -60,31 +70,48 @@ public class Kwirk extends ApplicationAdapter {
 		// Gdx.graphics.getHeight());
 
 		Tex.init();
-
+/*
 		level = Level
 				.load(Gdx.files
 						.getFileHandle(
 								"C:/Users/daniel.platz/Dropbox/Dev/Java/Games/Kwirk/Project/android/assets/levels/"
 										+ "test.lvl", FileType.Absolute));
-
-		editor = new Ed();
+*/
+		//editor = new Ed();
+		loadLevel(Gdx.files.internal(levels[levelIndex]));
 	}
 
 	boolean loading = true;
 	int stage = 0;
 	public static Matrix4 projectionMatrix2D = new Matrix4();
 
-	Vector2 touchDownLeft;
-	int touchLeftId = -1;
-	Vector2 touchDownRight;
-	int touchRightId = -1;
-
+	private int levelIndex = 0;
+	
+	private void loadLevel(FileHandle fh) {
+		ticker = 1;
+		loading = true;
+		level = Level.load(fh);
+	}
+	
+	private void reloadCurrentLevel() {
+		loadLevel(Gdx.files.internal(levels[levelIndex]));
+	}
+	
+	public void levelCompleted(Level l) {
+		levelIndex++;
+		reloadCurrentLevel();
+	}
+	
 	@Override
 	public void render() {
 		ticker++;
 
-		editor.tick();
+		if (editor != null) editor.tick();
 
+		if (Gdx.input.isKeyJustPressed(Keys.R)) {
+			reloadCurrentLevel();
+		}
+		
 		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
 		Gdx.gl.glClearColor(104 / 255f, 136 / 255f, 252 / 255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -110,15 +137,16 @@ public class Kwirk extends ApplicationAdapter {
 			font.setUseIntegerPositions(true);
 			batch.begin();
 
-			TextBounds bounds = font.getBounds("Level 1");
+			String levelName = "Level " + (levelIndex+1);
+			TextBounds bounds = font.getBounds(levelName);
 
 			float x = Gdx.graphics.getWidth() / 2.0f - bounds.width / 2.0f;
-			float y = Gdx.graphics.getHeight() / 2.0f + bounds.height / 2.0f;
+			float y = Gdx.graphics.getHeight() / 2.0f - bounds.height / 2.0f;
 
 			font.setColor(Color.BLUE);
-			font.draw(batch, "Level 1", x + 10, y - 10);
+			font.draw(batch, levelName, x + 10, y - 10);
 			font.setColor(Color.WHITE);
-			font.draw(batch, "Level 1", x, y);
+			font.draw(batch, levelName, x, y);
 
 			batch.end();
 
@@ -126,6 +154,11 @@ public class Kwirk extends ApplicationAdapter {
 				loading = false;
 		}
 
-		editor.render();
+		if (editor != null) editor.render();
+	}
+	
+	private static Kwirk _instance = null;
+	public static Kwirk getInstance() {
+		return _instance;
 	}
 }

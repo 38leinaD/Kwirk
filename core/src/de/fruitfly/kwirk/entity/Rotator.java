@@ -127,10 +127,13 @@ public class Rotator extends Entity {
 		for (y=bitmap[0].length-1; y>s; y--) {
 			if (bitmap[x][y]==0) continue;
 			if (rotationDir < 0) {
-				if (isBitmapAreaBlocked(s+1, s+1, s, y-s)) return;
+				if (isBitmapAreaBlocked(p, s+1, s+1, s, y-s)) {
+					System.out.println("BLOCKED");
+					return;
+				}
 			}
 			else {
-				if (isBitmapAreaBlocked(0, s+1, s, y-s)) return;
+				if (isBitmapAreaBlocked(p, 0, s+1, s, y-s)) return;
 			}
 			break;
 		}
@@ -138,10 +141,10 @@ public class Rotator extends Entity {
 		for (y=0; y<s; y++) {
 			if (bitmap[x][y]==0) continue;
 			if (rotationDir < 0) {
-				if (isBitmapAreaBlocked(0, y, s, s)) return;
+				if (isBitmapAreaBlocked(p, 0, y, s, s)) return;
 			}
 			else {
-				if (isBitmapAreaBlocked(s+1, y, s, s-y)) return;
+				if (isBitmapAreaBlocked(p, s+1, y, s, s-y)) return;
 			}
 			break;
 		}
@@ -151,10 +154,10 @@ public class Rotator extends Entity {
 		for (x=bitmap.length-1; x>s; x--) {
 			if (bitmap[x][y]==0) continue;
 			if (rotationDir < 0) {
-				if (isBitmapAreaBlocked(s+1, 0, x-s, s)) return;
+				if (isBitmapAreaBlocked(p, s+1, 0, x-s, s)) return;
 			}
 			else {
-				if (isBitmapAreaBlocked(s+1, s+1, x-s, s)) return;
+				if (isBitmapAreaBlocked(p, s+1, s+1, x-s, s)) return;
 			}
 			break;
 		}
@@ -162,10 +165,10 @@ public class Rotator extends Entity {
 		for (x=0; x<s; x++) {
 			if (bitmap[x][y]==0) continue;
 			if (rotationDir < 0) {
-				if (isBitmapAreaBlocked(x, s+1, s-x, s)) return;
+				if (isBitmapAreaBlocked(p, x, s+1, s-x, s)) return;
 			}
 			else {
-				if (isBitmapAreaBlocked(x, 0, s, s)) return;
+				if (isBitmapAreaBlocked(p, x, 0, s, s)) return;
 			}
 			break;
 		}
@@ -197,13 +200,13 @@ public class Rotator extends Entity {
 		rotationAngle = rotationDir*90.0f;
 	}
 
-	private boolean isBitmapAreaBlocked(int x, int y, int w, int h) {
+	private boolean isBitmapAreaBlocked(Player p, int x, int y, int w, int h) {
 		int s = bitmap.length/2;
 		for (int xx=x; xx<x+w; xx++) {
 			for (int yy=y; yy<y+h; yy++) {
 				int xt = getX()-s+xx;
 				int yt= getY()-s+yy;
-				if (isTileBlocked(xt, yt, null)) return true;
+				if (isTileBlocked(xt, yt, p)) return true;
 			}
 		}
 		return false;
@@ -217,7 +220,7 @@ public class Rotator extends Entity {
 		}
 		else {
 			RefTile rt = Kwirk.level.getEntityTileMap()[x][y];
-			if (rt != null && rt.getParent() != this && (p == null || rt.getParent() != p)) {
+			if (rt != null && rt.getParent() != this && rt.getParent() != p) {
 				return true;
 			}
 		}
