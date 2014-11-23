@@ -36,11 +36,6 @@ public class Kwirk extends ApplicationAdapter {
 
 	public static List<Ticks> tickers = new LinkedList<Ticks>();
 
-	public static boolean touchEventLeft = false;
-	public static boolean touchEventRight = false;
-	public static boolean touchEventUp = false;
-	public static boolean touchEventDown = false;
-
 	public Ed editor;
 
 	@Override
@@ -94,7 +89,7 @@ public class Kwirk extends ApplicationAdapter {
 		Gdx.gl.glClearColor(104 / 255f, 136 / 255f, 252 / 255f, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glDisable(GL20.GL_BLEND);
-		Gdx.gl.glDisable(GL20.GL_CULL_FACE);
+		Gdx.gl.glEnable(GL20.GL_CULL_FACE);
 
 		for (Ticks t : tickers) {
 			t.tick();

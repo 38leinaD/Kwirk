@@ -10,8 +10,6 @@ import de.fruitfly.kwirk.tile.WaterTile;
 public class Pusher extends Entity {
 	protected int[][] bitmap;
 	
-	private static int texIndexer = 0;
-	private int texIndex;
 	private boolean floating = false;
 	private float z = 0;
 	

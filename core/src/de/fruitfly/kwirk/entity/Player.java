@@ -34,20 +34,20 @@ public class Player extends Entity {
 
 	public void tick() {
 		ticker++;
-		if (Gdx.input.isKeyPressed(Keys.LEFT) || Kwirk.touchEventLeft) {
+		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			this.rotate(Keys.LEFT);
 			this.tryMove(-1, 0);
 		}
-		else if (Gdx.input.isKeyPressed(Keys.RIGHT) || Kwirk.touchEventRight) {
+		else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
 			this.rotate(Keys.RIGHT);
 			this.tryMove(1, 0);
 		}
 		
-		if (Gdx.input.isKeyPressed(Keys.UP) || Kwirk.touchEventUp) {
+		if (Gdx.input.isKeyPressed(Keys.UP)) {
 			this.rotate(Keys.UP);
 			this.tryMove(0, 1);
 		}
-		else if (Gdx.input.isKeyPressed(Keys.DOWN) || Kwirk.touchEventDown) {
+		else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
 			this.rotate(Keys.DOWN);
 			this.tryMove(0, -1);
 		}

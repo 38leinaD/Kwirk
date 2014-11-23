@@ -181,7 +181,7 @@ public class Ed implements InputProcessor {
 			if (keyCode == Keys.ENTER) {
 				Class c = OBJS.get(objectSelected);
 				if (c == Pusher.class) {
-					if (objectInstance instanceof EditTile) {
+					if (objectInstance instanceof EditTile && createMax != null) {
 						int[][] bitmap = new int[createMax.x - createMin.x + 1][createMax.y - createMin.y + 1];
 						for (int x=createMin.x; x<=createMax.x; x++) {
 							for (int y=createMin.y; y<=createMax.y; y++) {
@@ -308,18 +308,13 @@ public class Ed implements InputProcessor {
 		Kwirk.font.draw(Kwirk.batch, selectedTile != null ? "(" + selectedTile.x + "," + selectedTile.y + ")" : "", 10, 10+2*15);
 		Kwirk.batch.end();
 		
-		G.sr.setProjectionMatrix(Kwirk.projectionMatrix2D);
-		G.sr.setTransformMatrix(new Matrix4().idt());
-		G.sr.begin();
-		//G.sr.line(0, 0, 100, 100);
-		G.sr.end();
-		
 		G.sr.setProjectionMatrix(G.cam.projection);
 		G.sr.setTransformMatrix(G.cam.view);
 
 		mode.render();
 		
 		if (selectedTile != null) {
+			G.sr.setAutoShapeType(true);
 			G.sr.begin();
 			G.sr.setColor(Color.WHITE);
 			G.sr.box(selectedTile.x, selectedTile.y, 1, 1, 1, 1);

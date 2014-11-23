@@ -55,19 +55,7 @@ public class Level {
 
 		G.sr.setProjectionMatrix(G.cam.projection);
 		G.sr.setTransformMatrix(G.cam.view);
-
-		G.sr.setAutoShapeType(true);
-		G.sr.begin();
-		G.sr.setColor(Color.RED);
-		G.sr.line(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(1.0f, 0.0f, 0.0f));
-		G.sr.setColor(Color.GREEN);
-		G.sr.line(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 1.0f, 0.0f));
-		G.sr.setColor(Color.BLUE);
-		G.sr.line(new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 1.0f));
-
-		// shapeRenderer.box(0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-		G.sr.end();
-
+		
 		Tex.TEXTURE_GAME_ART.bind();
 
 		G.gl.begin(new Matrix4().idt(), G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
@@ -116,7 +104,7 @@ public class Level {
 			e.render();
 		}
 		
-		
+		/*
 		G.sr.setColor(Color.RED);
 		G.sr.begin();
 		for (int x = 0; x < this.entityTileMap.length; x++) {
@@ -128,7 +116,7 @@ public class Level {
 			}
 		}
 		G.sr.end();
-
+		*/
 	}
 	
 	public void save() {

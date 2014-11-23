@@ -15,6 +15,9 @@ public class Entity {
 	protected int x, y;
 	private static Matrix4 modelTransform = new Matrix4().idt();
 
+	protected static int texIndexer = 0;
+	protected int texIndex;
+	
 	public Entity(int x, int y) {
 		this.x = x;
 		this.y = y;
@@ -218,11 +221,11 @@ public class Entity {
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 0, 0.999f);
+		G.gl.vertex(0, 0, 0.998f);
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 0, 0.999f);
+		G.gl.vertex(0, 0, 0.998f);
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
@@ -230,7 +233,7 @@ public class Entity {
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 0, 0.999f);
+		G.gl.vertex(1, 0, 0.998f);
 		
 		// back
 		G.gl.normal(0.0f, 1.0f, 0.0f);
@@ -243,11 +246,11 @@ public class Entity {
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 1, 0.999f);
+		G.gl.vertex(1, 1, 0.998f);
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 1, 0.999f);
+		G.gl.vertex(1, 1, 0.998f);
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
@@ -255,7 +258,7 @@ public class Entity {
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
+		G.gl.vertex(0, 1, 0.998f);
 		
 		// left
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
@@ -268,11 +271,11 @@ public class Entity {
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
+		G.gl.vertex(0, 1, 0.998f);
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
+		G.gl.vertex(0, 1, 0.998f);
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
@@ -280,7 +283,7 @@ public class Entity {
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(0, 0, 0.999f);
+		G.gl.vertex(0, 0, 0.998f);
 		
 		// right
 		G.gl.normal(1.0f, 0.0f, 0.0f);
@@ -293,11 +296,11 @@ public class Entity {
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 0, 0.999f);
+		G.gl.vertex(1, 0, 0.998f);
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 0, 0.999f);
+		G.gl.vertex(1, 0, 0.998f);
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
@@ -305,32 +308,32 @@ public class Entity {
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 1, 0.999f);
+		G.gl.vertex(1, 1, 0.998f);
 		
 		// top
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(0, 0, 0.999f);
+		G.gl.vertex(0, 0, 0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.999f);
+		G.gl.vertex(1, 0, 0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
+		G.gl.vertex(0, 1, 0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.999f);
+		G.gl.vertex(0, 1, 0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.999f);
+		G.gl.vertex(1, 0, 0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 1, 0.999f);
+		G.gl.vertex(1, 1, 0.998f);
 		
 		G.gl.end();
 	}

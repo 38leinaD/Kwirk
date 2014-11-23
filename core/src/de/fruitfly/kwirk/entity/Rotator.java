@@ -13,8 +13,6 @@ public class Rotator extends Entity {
 	protected int[][] bitmap;
 	protected int[][] oldBitmap;
 
-	private static int texIndexer = 0;
-	private int texIndex;
 	private boolean rotating = false;
 	private float rotationAngle;
 	
