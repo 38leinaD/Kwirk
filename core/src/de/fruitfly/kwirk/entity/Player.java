@@ -155,14 +155,7 @@ public class Player extends Entity {
 		RefTile t = Kwirk.level.getEntityTileMap()[playerX+pushX][playerY+pushY];
 		if (t != null) {
 			Entity entity = t.getParent();
-			if (entity instanceof Tri) {
-				/*Tri tri = (Tri) entity;
-				if (playerX == tri.x - 1 && (playerY == tri.y - 1 || playerY == tri.y + 1)) {
-					tri.rotate(true);
-				}
-				*/
-			}
-			else if (entity instanceof Pusher) {
+			if (entity instanceof Pusher) {
 				Pusher p = (Pusher) entity;
 				if (p.push(pushX, pushY)) move(pushX, pushY);;
 			}

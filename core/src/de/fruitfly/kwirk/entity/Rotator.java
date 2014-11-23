@@ -116,18 +116,58 @@ public class Rotator extends Entity {
 		for (int x=0; x<oldBitmap.length; x++) {
 			for (int y=0; y<oldBitmap[0].length; y++) {
 				if (oldBitmap[x][y]==0) continue;
-				Tile t = Kwirk.level.getTileMap()[getX()-s+x][getY()-s+y];
-				if (t != null && t.blocks(this)) {
-					// blocking tile
-					return;
-				}
-				else {
-					RefTile rt = Kwirk.level.getEntityTileMap()[getX()-s+x][getY()-s+y];
-					if (rt != null && rt.getParent() != this && rt.getParent() != p) {
-						return;
-					}
-				}
+				if (isTileBlocked(getX()-s+x, getY()-s+y, p)) return;
 			}
+		}
+		
+		// check if while rotating there will be blockers
+		int x=s;
+		int y;
+		// up
+		for (y=bitmap[0].length-1; y>s; y--) {
+			if (bitmap[x][y]==0) continue;
+			if (rotationDir < 0) {
+				if (isBitmapAreaBlocked(s+1, s+1, s, y-s)) return;
+			}
+			else {
+				if (isBitmapAreaBlocked(0, s+1, s, y-s)) return;
+			}
+			break;
+		}
+		// down
+		for (y=0; y<s; y++) {
+			if (bitmap[x][y]==0) continue;
+			if (rotationDir < 0) {
+				if (isBitmapAreaBlocked(0, y, s, s)) return;
+			}
+			else {
+				if (isBitmapAreaBlocked(s+1, y, s, s-y)) return;
+			}
+			break;
+		}
+		
+		y=s;
+		// right
+		for (x=bitmap.length-1; x>s; x--) {
+			if (bitmap[x][y]==0) continue;
+			if (rotationDir < 0) {
+				if (isBitmapAreaBlocked(s+1, 0, x-s, s)) return;
+			}
+			else {
+				if (isBitmapAreaBlocked(s+1, s+1, x-s, s)) return;
+			}
+			break;
+		}
+		// left
+		for (x=0; x<s; x++) {
+			if (bitmap[x][y]==0) continue;
+			if (rotationDir < 0) {
+				if (isBitmapAreaBlocked(x, s+1, s-x, s)) return;
+			}
+			else {
+				if (isBitmapAreaBlocked(x, 0, s, s)) return;
+			}
+			break;
 		}
 		
 		// check where player can go
@@ -157,6 +197,33 @@ public class Rotator extends Entity {
 		rotationAngle = rotationDir*90.0f;
 	}
 
+	private boolean isBitmapAreaBlocked(int x, int y, int w, int h) {
+		int s = bitmap.length/2;
+		for (int xx=x; xx<x+w; xx++) {
+			for (int yy=y; yy<y+h; yy++) {
+				int xt = getX()-s+xx;
+				int yt= getY()-s+yy;
+				if (isTileBlocked(xt, yt, null)) return true;
+			}
+		}
+		return false;
+	}
+	
+	private boolean isTileBlocked(int x, int y, Player p) {
+		Tile t = Kwirk.level.getTileMap()[x][y];
+		if (t != null && t.blocks(this)) {
+			// blocking tile
+			return true;
+		}
+		else {
+			RefTile rt = Kwirk.level.getEntityTileMap()[x][y];
+			if (rt != null && rt.getParent() != this && (p == null || rt.getParent() != p)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public int[][] getBitmap() {
 		return bitmap;
 	}
