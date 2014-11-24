@@ -4,9 +4,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Files.FileType;
-import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -22,10 +21,9 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.math.collision.Ray;
 
-import de.fruitfly.kwirk.tile.ExitTile;
-import de.fruitfly.kwirk.tile.RefTile;
-import de.fruitfly.kwirk.tile.Tile;
+import de.fruitfly.kwirk.entity.Player;
 
 public class Kwirk extends ApplicationAdapter {
 	public static SpriteBatch batch;
@@ -37,9 +35,12 @@ public class Kwirk extends ApplicationAdapter {
 	public static int ticker;
 
 	public static List<Ticks> tickers = new LinkedList<Ticks>();
-
+	
 	public Ed editor;
-
+	
+	public static List<Player> controlableEntites = new LinkedList<Player>();
+	public static int controlledEntity = 0;
+	
 	private String[] levels = {
 		"levels/original/level01.txt",
 		"levels/original/level02.txt",
@@ -64,8 +65,9 @@ public class Kwirk extends ApplicationAdapter {
 				Gdx.files.internal("wall.fsh"));
 
 		G.gl = new SurfaceRenderer(sp);
-		G.cam = new OrthographicCamera(Gdx.graphics.getWidth(),
-				Gdx.graphics.getHeight());
+		
+		this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		
 		// cam = new PerspectiveCamera(70, Gdx.graphics.getWidth(),
 		// Gdx.graphics.getHeight());
 
@@ -81,6 +83,24 @@ public class Kwirk extends ApplicationAdapter {
 		loadLevel(Gdx.files.internal(levels[levelIndex]));
 	}
 
+	@Override
+	public void resize(int width, int height) {
+		int viewSize = 20;
+		float ratio = width/(float)height;
+		int w, h;
+		/*if (ratio > 1.0f) {
+			// width > height
+			h = viewSize;
+			w = (int) (viewSize * ratio);
+		}
+		else {*/
+			// height > width
+			w = viewSize;
+			h = (int) (viewSize / ratio);
+		//}
+		G.cam = new OrthographicCamera(w, h);
+	}
+
 	boolean loading = true;
 	int stage = 0;
 	public static Matrix4 projectionMatrix2D = new Matrix4();
@@ -90,6 +110,8 @@ public class Kwirk extends ApplicationAdapter {
 	private void loadLevel(FileHandle fh) {
 		ticker = 1;
 		loading = true;
+		controlableEntites.clear();
+		controlledEntity = 0;
 		level = Level.load(fh);
 	}
 	
@@ -102,27 +124,89 @@ public class Kwirk extends ApplicationAdapter {
 		reloadCurrentLevel();
 	}
 	
-	@Override
-	public void render() {
+	
+	private static Vector3 UP = new Vector3(0.0f, 1.0f, 0.0f);
+	private static Vector3 DOWN = new Vector3(0.0f, -1.0f, 0.0f);
+	private static Vector3 RIGHT = new Vector3(1.0f, 0.0f, 0.0f);
+	private static Vector3 LEFT = new Vector3(-1.0f, 0.0f, 0.0f);
+	
+	private void tick() {
 		ticker++;
-
 		if (editor != null) editor.tick();
 
-		if (Gdx.input.isKeyJustPressed(Keys.R)) {
-			reloadCurrentLevel();
+		Player player = controlableEntites.get(controlledEntity);
+		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
+			player.move(-1, 0);
+		}
+		else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
+			player.move(1, 0);
 		}
 		
-		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-		Gdx.gl.glClearColor(104 / 255f, 136 / 255f, 252 / 255f, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
-		Gdx.gl.glDisable(GL20.GL_BLEND);
-		Gdx.gl.glEnable(GL20.GL_CULL_FACE);
-
+		if (Gdx.input.isKeyPressed(Keys.UP)) {
+			player.move(0, 1);
+		}
+		else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
+			player.move(0, -1);
+		}
+		
+		if (Gdx.input.isKeyJustPressed(Keys.R) || Gdx.input.isTouched(2)) {
+			reloadCurrentLevel();
+			return;
+		}
+		
+		if (Gdx.input.isButtonPressed(0)) {
+			float x = Gdx.input.getX();
+			float y = Gdx.input.getY();
+			
+			Vector3 touchPos = new Vector3();
+			Ray r = G.cam.getPickRay(x, y);
+			float alpha = -r.origin.z/r.direction.z;
+	
+			r.getEndPoint(touchPos, alpha);
+			
+			Vector3 playerPos = new Vector3(player.getX()+0.5f, player.getY()+0.5f, 0.0f);
+			touchPos.sub(playerPos);
+			
+			if (touchPos.len() < 0.5f) {
+				//System.out.println("ignore touch " + touchPos.len());
+				return;
+			}
+			touchPos.nor();
+			
+			if (touchPos.dot(UP) > 0.8f) {
+				player.move(0, 1);
+			}
+			else if (touchPos.dot(DOWN) > 0.8f) {
+				player.move(0, -1);
+			}
+			else if (touchPos.dot(LEFT) > 0.8f) {
+				player.move(-1, 0);
+			}
+			else if (touchPos.dot(RIGHT) > 0.8f) {
+				player.move(1, 0);
+			}
+		}
+		
 		for (Ticks t : tickers) {
 			t.tick();
 		}
 
 		level.tick();
+	}
+	
+	@Override
+	public void render() {
+		tick();
+
+		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
+		Gdx.gl.glClearColor(104 / 255f, 136 / 255f, 252 / 255f, 1);
+		//Gdx.gl.glClearColor(1.0f, 0.0f, 0.0f, 1);
+		
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		Gdx.gl.glDisable(GL20.GL_BLEND);
+		Gdx.gl.glEnable(GL20.GL_CULL_FACE);
+
+		
 		level.render();
 		
 		projectionMatrix2D.setToOrtho2D(0, Gdx.graphics.getHeight(),

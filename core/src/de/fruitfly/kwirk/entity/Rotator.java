@@ -185,12 +185,12 @@ public class Rotator extends Entity {
 			}
 		}
 		
-		if (playerMove) {
+		if (!playerMove) {
 			// cancel it; nowhere for player to go
 			System.out.println("Move canceled; nowhere for player to move");
 			return;
 		}
-		p.move(playerMoveX, playerMoveY);
+		p._move(playerMoveX, playerMoveY);
 		
 		clearRefTiles(Kwirk.level);
 		int[][] tmp = bitmap;

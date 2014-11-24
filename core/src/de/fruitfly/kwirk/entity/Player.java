@@ -23,7 +23,6 @@ public class Player extends Entity {
 	private int ticker;
 	private TextureRegion[] skin;
 	
-	public boolean isControlled = false;
 	public Player(int x, int y, TextureRegion[] skin) {
 		super(x, y);
 		this.interpX = x;
@@ -35,37 +34,14 @@ public class Player extends Entity {
 
 	public void tick() {
 		ticker++;
-		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
-			this.rotate(Keys.LEFT);
-			this.tryMove(-1, 0);
-		}
-		else if (Gdx.input.isKeyPressed(Keys.RIGHT)) {
-			this.rotate(Keys.RIGHT);
-			this.tryMove(1, 0);
-		}
-		
-		if (Gdx.input.isKeyPressed(Keys.UP)) {
-			this.rotate(Keys.UP);
-			this.tryMove(0, 1);
-		}
-		else if (Gdx.input.isKeyPressed(Keys.DOWN)) {
-			this.rotate(Keys.DOWN);
-			this.tryMove(0, -1);
-		}
-
 		interpolateMove();
 		interpolateRotation();
 
 		if (exitTicker > 0) exitTicker--;
 	}
 	
-	private void rotate(int key) {
+	private void rotate(int keyAngle) {
 		if (moving) return;
-		int keyAngle = 0;
-		if (key == Keys.LEFT) keyAngle = 90;
-		else if (key == Keys.RIGHT) keyAngle = 270;
-		if (key == Keys.UP) keyAngle = 0;
-		else if (key == Keys.DOWN) keyAngle = 180;
 		
 		if (keyAngle == newAngle) return;
 		
@@ -128,18 +104,31 @@ public class Player extends Entity {
 		}
 	}
 
-	private void tryMove(int xoff, int yoff) {
+	public void move(int xoff, int yoff) {
 		if (moving) return;
 
+		if (xoff < 0) {
+			this.rotate(90);
+		}
+		else if (xoff > 0) {
+			this.rotate(270);
+		}
+		else if (yoff > 0) {
+			this.rotate(0);
+		}
+		else {
+			this.rotate(180);
+		}
+		
 		if (isBlocked(x + xoff, y + yoff)) {
 			push(x, y, xoff, yoff);
 			return;
 		}
 		
-		move(xoff, yoff);
+		_move(xoff, yoff);
 	}
 	
-	protected void move(int xoff, int yoff) {
+	protected void _move(int xoff, int yoff) {
 		Kwirk.level.getEntityTileMap()[x][y] = null;
 		interpX = x;
 		interpY = y;
@@ -163,7 +152,7 @@ public class Player extends Entity {
 			Entity entity = rt.getParent();
 			if (entity instanceof Pusher) {
 				Pusher p = (Pusher) entity;
-				if (p.push(pushX, pushY)) tryMove(pushX, pushY);;
+				if (p.push(pushX, pushY)) move(pushX, pushY);;
 			}
 			else if (entity instanceof Rotator) {
 				Rotator r = (Rotator) entity;

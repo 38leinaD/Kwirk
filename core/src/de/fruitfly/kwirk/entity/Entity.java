@@ -48,7 +48,7 @@ public class Entity {
 				}
 			}
 		}
-		Kwirk.level.getEntities().remove(this);
+		Kwirk.level.removeEntity(this);
 	}
 	
 	public void addToLevel(Level level) {

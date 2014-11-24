@@ -27,6 +27,7 @@ public class Level {
 	private Tile[][] tileMap;
 	private RefTile[][] entityTileMap;
 	private List<Entity> entities = new LinkedList<Entity>();
+	private List<Entity> deletedEntities = new LinkedList<Entity>();
 	public String name = "testlevel";
 	
 	public Level(int w, int h) {
@@ -34,7 +35,15 @@ public class Level {
 		entityTileMap = new RefTile[w][h];
 	}
 	
+	public void removeEntity(Entity e) {
+		deletedEntities.add(e);
+	}
+	
 	public void tick() {
+		for (Entity e : deletedEntities) {
+			entities.remove(e);
+		}
+		
 		for (Entity e : entities) {
 			e.tick();
 		}
@@ -45,10 +54,10 @@ public class Level {
 		 * cam.position.set(1.0f,-3.0f, 9.0f); cam.up.set(0.0f, 0.0f, 1.0f);
 		 * cam.lookAt(5.0f, 3.5f, 2.0f);
 		 */
-		G.cam.position.set(10.0f, 3.0f, 9.0f);
+		G.cam.position.set(getWidth()/2.0f, -2.0f, 8.0f);
 		G.cam.up.set(0.0f, 0.0f, 1.0f);
-		G.cam.lookAt(10.0f, 8.0f, 0.0f);
-		((OrthographicCamera) G.cam).zoom = 0.02f;
+		G.cam.lookAt(getWidth()/2.0f, getHeight()/2.0f, 0.0f);
+		((OrthographicCamera) G.cam).zoom = 1.0f;
 		// ((OrthographicCamera)G.cam).zoom = 0.02f;
 
 		G.cam.update();
@@ -232,10 +241,7 @@ public class Level {
 				if (type.startsWith("Player")) {
 					Player p = new Player(x, y, firstPlayer ? Tex.TEXREG_KWIRK : Tex.TEXREG_KWURK);
 					p.addToLevel(l);
-					if (firstPlayer) {
-						p.isControlled = true;
-						firstPlayer = false;
-					}
+					Kwirk.controlableEntites.add(p);
 				}
 				else if (type.startsWith("Pusher")) {
 					String bm = type.substring(7, type.length()-1);
@@ -284,5 +290,13 @@ public class Level {
 	
 	public List<Entity> getEntities() {
 		return entities;
+	}
+	
+	public int getWidth() {
+		return tileMap.length;
+	}
+	
+	public int getHeight() {
+		return tileMap[0].length;
 	}
 }
