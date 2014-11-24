@@ -1,6 +1,5 @@
 package de.fruitfly.kwirk.entity;
 
-import java.awt.Point;
 
 import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.Level;
@@ -174,21 +173,24 @@ public class Rotator extends Entity {
 		}
 		
 		// check where player can go
-		Point playerMove = null;
+		int playerMoveX = 0, playerMoveY = 0;
+		boolean playerMove = false;
 		for (int i=1; i<=2; i++) {
 			// either xoff or yoff, so one is zeroed here
 			if (oldBitmap[p.getX()-getX()+s+i*xoff][p.getY()-getY()+s+i*yoff] == 0) {
-				playerMove = new Point(xoff*i, yoff*i);
+				playerMoveX = xoff*i;
+				playerMoveY = yoff*i;
+				playerMove = true;
 				break;
 			}
 		}
 		
-		if (playerMove == null) {
+		if (playerMove) {
 			// cancel it; nowhere for player to go
 			System.out.println("Move canceled; nowhere for player to move");
 			return;
 		}
-		p.move(playerMove.x, playerMove.y);
+		p.move(playerMoveX, playerMoveY);
 		
 		clearRefTiles(Kwirk.level);
 		int[][] tmp = bitmap;

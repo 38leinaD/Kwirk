@@ -1,6 +1,5 @@
 package de.fruitfly.kwirk;
 
-import java.awt.Point;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -10,7 +9,6 @@ import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector3;
@@ -50,12 +48,12 @@ public class Ed implements InputProcessor {
 	private class EraseMode extends Mode {
 		public void tick() {
 			if (Gdx.input.isButtonPressed(0)) {
-				if (isWorldTile(selectedTile.x, selectedTile.y)) {
-					Tile t = Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y];
+				if (isWorldTile(selectedTileX, selectedTileY)) {
+					Tile t = Kwirk.level.getTileMap()[selectedTileX][selectedTileY];
 					if (t != null) {
-						Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y] = null;
+						Kwirk.level.getTileMap()[selectedTileX][selectedTileY] = null;
 					}
-					RefTile rt = Kwirk.level.getEntityTileMap()[selectedTile.x][selectedTile.y];
+					RefTile rt = Kwirk.level.getEntityTileMap()[selectedTileX][selectedTileY];
 					if (rt != null) {
 						Entity e = rt.getParent();
 						e.removeFromLevel();
@@ -76,7 +74,7 @@ public class Ed implements InputProcessor {
 		private List<Class> OBJS = new LinkedList<Class>();
 		private int objectSelected = 0;
 		private Object objectInstance = null;
-		private Point createMin, createMax;
+		private int createMinX, createMinY, createMaxX, createMaxY;
 		
 		public CreateMode() {
 			OBJS.add(WallTile.class);
@@ -91,35 +89,37 @@ public class Ed implements InputProcessor {
 		
 		public void tick() {
 			if (Gdx.input.isButtonPressed(0)) {
-				if (isWorldTile(selectedTile.x, selectedTile.y)) {
-					Tile t = Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y];
-					Tile rt = Kwirk.level.getEntityTileMap()[selectedTile.x][selectedTile.y];
+				if (isWorldTile(selectedTileX, selectedTileY)) {
+					Tile t = Kwirk.level.getTileMap()[selectedTileX][selectedTileY];
+					Tile rt = Kwirk.level.getEntityTileMap()[selectedTileX][selectedTileY];
 					if (t != null || rt != null) {
 						//System.out.println("Tile already occupied by " + t);
 					}
 					else if (objectInstance instanceof Tile){
 						if (objectInstance instanceof EditTile) {
-							Kwirk.level.getEntityTileMap()[selectedTile.x][selectedTile.y] = (EditTile)objectInstance;
+							Kwirk.level.getEntityTileMap()[selectedTileX][selectedTileY] = (EditTile)objectInstance;
 						}
 						else {
-							Kwirk.level.getTileMap()[selectedTile.x][selectedTile.y] = (Tile) objectInstance;
+							Kwirk.level.getTileMap()[selectedTileX][selectedTileY] = (Tile) objectInstance;
 						}
-						if (createMin == null) {
-							createMin = new Point(selectedTile.x, selectedTile.y);
-							createMax = new Point(selectedTile.x, selectedTile.y);
+						if (createMinX == Integer.MAX_VALUE) {
+							createMinX = selectedTileX;
+							createMinY = selectedTileY;
+							createMaxX = selectedTileX;
+							createMaxY = selectedTileY;
 						}
 						else {
-							if (selectedTile.x < createMin.x ) {
-								createMin.x = selectedTile.x;
+							if (selectedTileX < createMinX ) {
+								createMinX = selectedTileX;
 							}
-							if  (selectedTile.y < createMin.y) {
-								createMin.y = selectedTile.y;
+							if  (selectedTileY < createMinY) {
+								createMinY = selectedTileY;
 							}
-							if (selectedTile.x > createMax.x ) {
-								createMax.x = selectedTile.x;
+							if (selectedTileX > createMaxX ) {
+								createMaxX = selectedTileX;
 							}
-							if  (selectedTile.y > createMax.y) {
-								createMax.y = selectedTile.y;
+							if  (selectedTileY > createMaxY) {
+								createMaxY = selectedTileY;
 							}
 						}
 					}
@@ -133,8 +133,8 @@ public class Ed implements InputProcessor {
 			
 			if (objectInstance instanceof Entity) {
 				Entity e = (Entity) objectInstance;
-				e.setX(selectedTile.x);
-				e.setY(selectedTile.y);
+				e.setX(selectedTileX);
+				e.setY(selectedTileY);
 			}
 		}
 		
@@ -143,8 +143,10 @@ public class Ed implements InputProcessor {
 			objectSelected = (objectSelected + amount) % OBJS.size();
 			while (objectSelected < 0) objectSelected += OBJS.size(); // % does not work on negatives...!?
 			if (OBJS.get(objectSelected) != Pusher.class) {
-				createMin = null;
-				createMax = null;
+				createMinX = Integer.MAX_VALUE;
+				createMinY = Integer.MAX_VALUE;
+				createMaxX = Integer.MIN_VALUE;
+				createMaxY = Integer.MIN_VALUE;
 			}
 			createStencil();
 			return true;
@@ -162,7 +164,7 @@ public class Ed implements InputProcessor {
 				objectInstance = new WaterTile();
 			}
 			else if (c == Player.class) {
-				objectInstance = new Player(selectedTile.x, selectedTile.y, Tex.TEXREG_KWIRK);
+				objectInstance = new Player(selectedTileX, selectedTileY, Tex.TEXREG_KWIRK);
 			}
 			else if (c == Pusher.class) {
 				objectInstance = new EditTile(null);
@@ -181,32 +183,35 @@ public class Ed implements InputProcessor {
 			if (keyCode == Keys.ENTER) {
 				Class c = OBJS.get(objectSelected);
 				if (c == Pusher.class) {
-					if (objectInstance instanceof EditTile && createMax != null) {
-						int[][] bitmap = new int[createMax.x - createMin.x + 1][createMax.y - createMin.y + 1];
-						for (int x=createMin.x; x<=createMax.x; x++) {
-							for (int y=createMin.y; y<=createMax.y; y++) {
+					if (objectInstance instanceof EditTile && createMinX != Integer.MAX_VALUE) {
+						int[][] bitmap = new int[createMaxX - createMinX + 1][createMaxY - createMinY + 1];
+						for (int x=createMinX; x<=createMaxX; x++) {
+							for (int y=createMinY; y<=createMaxY; y++) {
 								if (Kwirk.level.getEntityTileMap()[x][y] instanceof EditTile) {
 									Kwirk.level.getEntityTileMap()[x][y] = null;
-									bitmap[x - createMin.x][y - createMin.y] = 1;
+									bitmap[x - createMinX][y - createMinY] = 1;
 								}
 								
 							}
 						}
-						Pusher p = new Pusher(createMin.x, createMin.y, bitmap);
+						Pusher p = new Pusher(createMinX, createMinY, bitmap);
 						p.addToLevel(Kwirk.level);
-						createMin = createMax = null;
+						createMinX = Integer.MAX_VALUE;
+						createMinY = Integer.MAX_VALUE;
+						createMaxX = Integer.MIN_VALUE;
+						createMaxY = Integer.MIN_VALUE;
 					}
 				}
 				else if (c == Rotator.class) {
-					int centerX = selectedTile.x;
-					int centerY = selectedTile.y;
+					int centerX = selectedTileX;
+					int centerY = selectedTileY;
 					
-					int rightX = createMax.x - centerX;
-					int leftX = centerX - createMin.x;
+					int rightX = createMaxX - centerX;
+					int leftX = centerX - createMinX;
 					int sideX = Math.max(rightX, leftX);
 					
-					int topY = createMax.y - centerY;
-					int bottomY = centerY - createMin.y;
+					int topY = createMaxY - centerY;
+					int bottomY = centerY - createMinY;
 					int sideY = Math.max(topY, bottomY);
 					int side = Math.max(sideX, sideY);
 
@@ -224,7 +229,10 @@ public class Ed implements InputProcessor {
 					Rotator r = new Rotator(centerX, centerY, bitmap);
 					r.addToLevel(Kwirk.level);
 					
-					createMin = createMax = null;
+					createMinX = Integer.MAX_VALUE;
+					createMinY = Integer.MAX_VALUE;
+					createMaxX = Integer.MIN_VALUE;
+					createMaxY = Integer.MIN_VALUE;
 				}
 			}
 			return super.keyDown(keyCode);
@@ -234,7 +242,7 @@ public class Ed implements InputProcessor {
 	private Mode mode = null;
 	
 	private List<Mode> modes;
-	private Point selectedTile = new Point();
+	private int selectedTileX, selectedTileY;
 	
 	public Ed() {
 		modes = new LinkedList<Mode>();
@@ -270,7 +278,8 @@ public class Ed implements InputProcessor {
 		r.getEndPoint(p, alpha);
 //		System.out.println(p.x + ", " + p.y + ", " + p.z);
 		
-		selectedTile.setLocation(MathUtils.floor(p.x), MathUtils.floor(p.y));
+		selectedTileX = MathUtils.floor(p.x);
+		selectedTileY = MathUtils.floor(p.y);
 		//0System.out.println(selectedTile);
 
 		mode.tick();
@@ -305,7 +314,7 @@ public class Ed implements InputProcessor {
 			Kwirk.font.draw(Kwirk.batch, i +") " + m.getName(), 10, 10+i*15);
 		}
 		Kwirk.font.setColor(Color.WHITE);
-		Kwirk.font.draw(Kwirk.batch, selectedTile != null ? "(" + selectedTile.x + "," + selectedTile.y + ")" : "", 10, 10+2*15);
+		Kwirk.font.draw(Kwirk.batch, "(" + selectedTileX + "," + selectedTileY + ")", 10, 10+2*15);
 		Kwirk.batch.end();
 		
 		G.sr.setProjectionMatrix(G.cam.projection);
@@ -313,13 +322,11 @@ public class Ed implements InputProcessor {
 
 		mode.render();
 		
-		if (selectedTile != null) {
 			G.sr.setAutoShapeType(true);
 			G.sr.begin();
 			G.sr.setColor(Color.WHITE);
-			G.sr.box(selectedTile.x, selectedTile.y, 1, 1, 1, 1);
+			G.sr.box(selectedTileX, selectedTileY, 1, 1, 1, 1);
 			G.sr.end();
-		}
 		
 	}
 	
