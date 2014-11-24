@@ -4,6 +4,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.files.FileHandle;
@@ -19,7 +20,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Matrix4;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.math.collision.Ray;
 
@@ -38,14 +38,17 @@ public class Kwirk extends ApplicationAdapter {
 	
 	public Ed editor;
 	
-	public static List<Player> controlableEntites = new LinkedList<Player>();
+	public static Player[] controlableEntites = new Player[10];
+	public static int controlableEntitesNum = 0;
 	public static int controlledEntity = 0;
 	
 	private String[] levels = {
 		"levels/original/level01.txt",
 		"levels/original/level02.txt",
 		"levels/original/level03.txt",
-		"levels/original/level04.txt"
+		"levels/original/level04.txt",
+		"levels/original/level05.txt",
+		"levels/original/level06.txt"
 	};
 	
 	@Override
@@ -72,9 +75,9 @@ public class Kwirk extends ApplicationAdapter {
 		// Gdx.graphics.getHeight());
 
 		Tex.init();
-/*
-		level = Level
-				.load(Gdx.files
+
+		/*
+		loadLevel(Gdx.files
 						.getFileHandle(
 								"C:/Users/daniel.platz/Dropbox/Dev/Java/Games/Kwirk/Project/android/assets/levels/"
 										+ "test.lvl", FileType.Absolute));
@@ -110,8 +113,11 @@ public class Kwirk extends ApplicationAdapter {
 	private void loadLevel(FileHandle fh) {
 		ticker = 1;
 		loading = true;
-		controlableEntites.clear();
+		for (int i=0; i<controlableEntites.length; i++) {
+			controlableEntites[i] = null;
+		}
 		controlledEntity = 0;
+		controlableEntitesNum = 0;
 		level = Level.load(fh);
 	}
 	
@@ -134,7 +140,7 @@ public class Kwirk extends ApplicationAdapter {
 		ticker++;
 		if (editor != null) editor.tick();
 
-		Player player = controlableEntites.get(controlledEntity);
+		Player player = controlableEntites[controlledEntity];
 		if (Gdx.input.isKeyPressed(Keys.LEFT)) {
 			player.move(-1, 0);
 		}
@@ -149,12 +155,21 @@ public class Kwirk extends ApplicationAdapter {
 			player.move(0, -1);
 		}
 		
+		if (Gdx.input.isKeyJustPressed(Keys.TAB)) {
+			int i=0;
+			for (; i<controlableEntites.length; i++) {
+				if (controlableEntites[i] == null) break;
+			}
+			controlledEntity = (controlledEntity+1) % i;
+		}
+		
+		
 		if (Gdx.input.isKeyJustPressed(Keys.R) || Gdx.input.isTouched(2)) {
 			reloadCurrentLevel();
 			return;
 		}
 		
-		if (Gdx.input.isButtonPressed(0)) {
+		if (editor == null && Gdx.input.isButtonPressed(0)) {
 			float x = Gdx.input.getX();
 			float y = Gdx.input.getY();
 			
@@ -164,26 +179,41 @@ public class Kwirk extends ApplicationAdapter {
 	
 			r.getEndPoint(touchPos, alpha);
 			
-			Vector3 playerPos = new Vector3(player.getX()+0.5f, player.getY()+0.5f, 0.0f);
-			touchPos.sub(playerPos);
+			Vector3 playerPos = null;
+			for (int i=0; i<controlableEntitesNum; i++) {
+				Player newPlayer = controlableEntites[i];
+				if (newPlayer != player) {
+					playerPos = new Vector3(newPlayer.getX()+0.5f, newPlayer.getY()+0.5f, 0.0f);
+					if (playerPos.dst(touchPos) <= 0.7) {
+						controlledEntity = i;
+						player = null;
+						break;
+					}
+				}
+			}
 			
-			if (touchPos.len() < 0.5f) {
-				//System.out.println("ignore touch " + touchPos.len());
-				return;
-			}
-			touchPos.nor();
-			
-			if (touchPos.dot(UP) > 0.8f) {
-				player.move(0, 1);
-			}
-			else if (touchPos.dot(DOWN) > 0.8f) {
-				player.move(0, -1);
-			}
-			else if (touchPos.dot(LEFT) > 0.8f) {
-				player.move(-1, 0);
-			}
-			else if (touchPos.dot(RIGHT) > 0.8f) {
-				player.move(1, 0);
+			if (player != null) {
+				playerPos = new Vector3(player.getX()+0.5f, player.getY()+0.5f, 0.0f);
+				touchPos.sub(playerPos);
+				
+				if (touchPos.len() < 0.5f) {
+					//System.out.println("ignore touch " + touchPos.len());
+					return;
+				}
+				touchPos.nor();
+				
+				if (touchPos.dot(UP) > 0.8f) {
+					player.move(0, 1);
+				}
+				else if (touchPos.dot(DOWN) > 0.8f) {
+					player.move(0, -1);
+				}
+				else if (touchPos.dot(LEFT) > 0.8f) {
+					player.move(-1, 0);
+				}
+				else if (touchPos.dot(RIGHT) > 0.8f) {
+					player.move(1, 0);
+				}
 			}
 		}
 		

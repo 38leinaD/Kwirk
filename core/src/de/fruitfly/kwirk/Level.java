@@ -155,6 +155,7 @@ public class Level {
 			}
 		}
 		
+		int playerIndex = 0;
 		for (Entity e : entities) {
 
 			if (e instanceof Pusher) {
@@ -193,7 +194,13 @@ public class Level {
 				f.writeString("e: " + r.getX() + "," + r.getY() + " Rotator[" + sb.toString() + "]\n", true);
 			}
 			else if (e instanceof Player) {
-				f.writeString("e: " + e.getX() + "," + e.getY() + " Player\n", true);
+				if (playerIndex == 0) {
+					f.writeString("e: " + e.getX() + "," + e.getY() + " Player\n", true);
+				}
+				else {
+					f.writeString("e: " + e.getX() + "," + e.getY() + " Player" + playerIndex + "\n", true);
+				}
+				playerIndex++;
 			}
 		}
 		
@@ -239,9 +246,14 @@ public class Level {
 				String type = line.split(" ")[2];
 				
 				if (type.startsWith("Player")) {
+					int playerIndex = 0;
+					if (!type.equals("Player")) {
+						playerIndex = Integer.parseInt(type.substring("Player".length()));
+					}
 					Player p = new Player(x, y, firstPlayer ? Tex.TEXREG_KWIRK : Tex.TEXREG_KWURK);
 					p.addToLevel(l);
-					Kwirk.controlableEntites.add(p);
+					Kwirk.controlableEntites[playerIndex] = p;
+					Kwirk.controlableEntitesNum++;
 				}
 				else if (type.startsWith("Pusher")) {
 					String bm = type.substring(7, type.length()-1);
