@@ -14,5 +14,5 @@ void main() {
   	float t = u_textureT + fract(v_tex0.t)*u_textureHeight;
   	gl_FragColor = texture2D(u_sampler0, vec2(s, t));
   	*/
-  	gl_FragColor = vec4(1, 1, 1, 1) *  texture2D(u_sampler0,  v_tex0) * (v_brightness + 0.1);
+  	gl_FragColor = vec4(1, 1, 1, 1) *  texture2D(u_sampler0,  v_tex0) * clamp(v_brightness + 0.5, 0.0, 1.0);
 }

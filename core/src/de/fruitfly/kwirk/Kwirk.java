@@ -229,8 +229,8 @@ public class Kwirk extends ApplicationAdapter {
 		tick();
 
 		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-		Gdx.gl.glClearColor(104 / 255f, 136 / 255f, 252 / 255f, 1);
-		//Gdx.gl.glClearColor(1.0f, 0.0f, 0.0f, 1);
+		//Gdx.gl.glClearColor(104 / 255f, 136 / 255f, 252 / 255f, 1);
+		Gdx.gl.glClearColor(0.2f, 0.4f, 0.6f, 1);
 		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glDisable(GL20.GL_BLEND);
