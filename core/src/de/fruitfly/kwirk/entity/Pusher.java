@@ -1,5 +1,6 @@
 package de.fruitfly.kwirk.entity;
 
+import de.fruitfly.kwirk.G;
 import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.Level;
 import de.fruitfly.kwirk.Tex;
@@ -70,6 +71,8 @@ public class Pusher extends Entity {
 				}
 			}
 		}
+		
+		G.soundPusher.play();
 		
 		clearRefTiles(Kwirk.level);
 		this.x += xoff;

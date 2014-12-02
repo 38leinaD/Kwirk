@@ -48,7 +48,16 @@ public class Kwirk extends ApplicationAdapter {
 		"levels/original/level03.txt",
 		"levels/original/level04.txt",
 		"levels/original/level05.txt",
-		"levels/original/level06.txt"
+		"levels/original/level06.txt",
+		"levels/original/level07.txt",
+		"levels/original/level08.txt",
+		"levels/original/level09.txt",
+		"levels/original/level10.txt",
+		"levels/original/level11.txt",
+		"levels/original/level12.txt",
+		"levels/original/level13.txt",
+		"levels/original/level14.txt",
+		"levels/original/level15.txt",
 	};
 	
 	@Override
@@ -81,30 +90,40 @@ public class Kwirk extends ApplicationAdapter {
 						.getFileHandle(
 								"C:/Users/daniel.platz/Dropbox/Dev/Java/Games/Kwirk/Project/android/assets/levels/"
 										+ "test.lvl", FileType.Absolute));
-*/
-		//editor = new Ed();
+
+		editor = new Ed();
+		*/
+		G.soundBeam = Gdx.audio.newSound(Gdx.files.internal("sounds/beam.wav"));
+		G.soundPusher = Gdx.audio.newSound(Gdx.files.internal("sounds/pusher.wav"));
+		G.soundRotate = Gdx.audio.newSound(Gdx.files.internal("sounds/rotate.wav"));
+		G.soundWalk = Gdx.audio.newSound(Gdx.files.internal("sounds/walk.wav"));
+		
 		loadLevel(Gdx.files.internal(levels[levelIndex]));
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		int viewSize = 20;
+		if (level != null) {
+			viewSize = Math.max(level.getWidth(), level.getHeight());
+		}
+	viewSize-=2;
 		float ratio = width/(float)height;
 		int w, h;
-		/*if (ratio > 1.0f) {
+		if (ratio > 1.0f) {
 			// width > height
 			h = viewSize;
 			w = (int) (viewSize * ratio);
 		}
-		else {*/
+		else {
 			// height > width
 			w = viewSize;
 			h = (int) (viewSize / ratio);
-		//}
+		}
 		G.cam = new OrthographicCamera(w, h);
 	}
 
-	boolean loading = true;
+	public static boolean loading = true;
 	int stage = 0;
 	public static Matrix4 projectionMatrix2D = new Matrix4();
 
@@ -119,6 +138,7 @@ public class Kwirk extends ApplicationAdapter {
 		controlledEntity = 0;
 		controlableEntitesNum = 0;
 		level = Level.load(fh);
+		resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 	}
 	
 	private void reloadCurrentLevel() {
@@ -160,6 +180,7 @@ public class Kwirk extends ApplicationAdapter {
 			for (; i<controlableEntites.length; i++) {
 				if (controlableEntites[i] == null) break;
 			}
+			G.soundBeam.play();
 			controlledEntity = (controlledEntity+1) % i;
 		}
 		
@@ -229,13 +250,13 @@ public class Kwirk extends ApplicationAdapter {
 		tick();
 
 		Gdx.gl.glEnable(GL20.GL_DEPTH_TEST);
-		//Gdx.gl.glClearColor(104 / 255f, 136 / 255f, 252 / 255f, 1);
-		Gdx.gl.glClearColor(0.2f, 0.4f, 0.6f, 1);
+		Gdx.gl.glClearColor(104 / 255f, 136 / 255f, 252 / 255f, 1);
+		//Gdx.gl.glClearColor(0.2f, 0.4f, 0.6f, 1);
 		
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 		Gdx.gl.glDisable(GL20.GL_BLEND);
 		Gdx.gl.glEnable(GL20.GL_CULL_FACE);
-
+		//Gdx.gl.glCullFace(GL20.GL_BACK);
 		
 		level.render();
 		

@@ -202,9 +202,10 @@ public class Entity {
 		G.gl.end();
 	}
 	
-	protected void renderBlock(TextureRegion tex, int x, int y, float z, int xoff, int yoff, float angle) {
+	protected void renderBlock(TextureRegion tex, int x, int y, float z, int xoff, int yoff, float angle, float scale) {
 		modelTransform.idt();
-		modelTransform.translate(x+0.5f, y+0.5f, z);
+		modelTransform.scale(scale, scale, 1.0f);
+		modelTransform.translate((x+0.5f)/scale, (y+0.5f)/scale, z);
 		modelTransform.rotate(new Vector3(0.0f, 0.0f, 1.0f), angle);
 		modelTransform.translate(xoff-0.5f, yoff-0.5f, 0.0f);
 		
@@ -213,127 +214,127 @@ public class Entity {
 		// front
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(0, 0, 0.0f);
+		G.gl.vertex(0, 0, z+0.0f);
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.0f);
+		G.gl.vertex(1, 0, z+0.0f);
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 0, 0.998f);
+		G.gl.vertex(0, 0, z+0.998f);
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 0, 0.998f);
+		G.gl.vertex(0, 0, z+0.998f);
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.0f);
+		G.gl.vertex(1, 0, z+0.0f);
 		
 		G.gl.normal(0.0f, -1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 0, 0.998f);
+		G.gl.vertex(1, 0, z+0.998f);
 		
 		// back
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(1, 1, 0.0f);
+		G.gl.vertex(1, 1, z+0.0f);
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(0, 1, 0.0f);
+		G.gl.vertex(0, 1, z+0.0f);
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 1, 0.998f);
+		G.gl.vertex(1, 1, z+0.998f);
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 1, 0.998f);
+		G.gl.vertex(1, 1, z+0.998f);
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(0, 1, 0.0f);
+		G.gl.vertex(0, 1, z+0.0f);
 		
 		G.gl.normal(0.0f, 1.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(0, 1, 0.998f);
+		G.gl.vertex(0, 1, z+0.998f);
 		
 		// left
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(0, 1, 0.0f);
+		G.gl.vertex(0, 1, z+0.0f);
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(0, 0, 0.0f);
+		G.gl.vertex(0, 0, z+0.0f);
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.998f);
+		G.gl.vertex(0, 1, z+0.998f);
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.998f);
+		G.gl.vertex(0, 1, z+0.998f);
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(0, 0, 0.0f);
+		G.gl.vertex(0, 0, z+0.0f);
 		
 		G.gl.normal(-1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(0, 0, 0.998f);
+		G.gl.vertex(0, 0, z+0.998f);
 		
 		// right
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(1, 0, 0.0f);
+		G.gl.vertex(1, 0, z+0.0f);
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 1, 0.0f);
+		G.gl.vertex(1, 1, z+0.0f);
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 0, 0.998f);
+		G.gl.vertex(1, 0, z+0.998f);
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(1, 0, 0.998f);
+		G.gl.vertex(1, 0, z+0.998f);
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 1, 0.0f);
+		G.gl.vertex(1, 1, z+0.0f);
 		
 		G.gl.normal(1.0f, 0.0f, 0.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 1, 0.998f);
+		G.gl.vertex(1, 1, z+0.998f);
 		
 		// top
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU(), tex.getV());
-		G.gl.vertex(0, 0, 0.998f);
+		G.gl.vertex(0, 0, z+0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.998f);
+		G.gl.vertex(1, 0, z+0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.998f);
+		G.gl.vertex(0, 1, z+0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU(), tex.getV2());
-		G.gl.vertex(0, 1, 0.998f);
+		G.gl.vertex(0, 1, z+0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV());
-		G.gl.vertex(1, 0, 0.998f);
+		G.gl.vertex(1, 0, z+0.998f);
 		
 		G.gl.normal(0.0f, 0.0f, 1.0f);
 		G.gl.texCoord(tex.getU2(), tex.getV2());
-		G.gl.vertex(1, 1, 0.998f);
+		G.gl.vertex(1, 1, z+0.998f);
 		
 		G.gl.end();
 	}

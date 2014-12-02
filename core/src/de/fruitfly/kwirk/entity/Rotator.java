@@ -1,6 +1,7 @@
 package de.fruitfly.kwirk.entity;
 
 
+import de.fruitfly.kwirk.G;
 import de.fruitfly.kwirk.Kwirk;
 import de.fruitfly.kwirk.Level;
 import de.fruitfly.kwirk.Tex;
@@ -191,7 +192,7 @@ public class Rotator extends Entity {
 			return;
 		}
 		p._move(playerMoveX, playerMoveY);
-		
+		G.soundRotate.play();
 		clearRefTiles(Kwirk.level);
 		int[][] tmp = bitmap;
 		bitmap = oldBitmap;
@@ -267,7 +268,10 @@ public class Rotator extends Entity {
 			for (int x=0; x<oldBitmap.length; x++) {
 				for (int y=0; y<oldBitmap[0].length; y++) {
 					if (oldBitmap[x][y]==0) continue;
-					this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x, this.y, 0.0f, -s+x, -s+y, angle);				
+					this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x, this.y, 0.0f, -s+x, -s+y, angle, 1.0f);	
+					if (x==s && y == s) {
+						this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x, this.y, 0.1f, -s+x, -s+y, angle, 0.5f);				
+					}
 				}
 			}
 		}
@@ -275,7 +279,11 @@ public class Rotator extends Entity {
 			for (int x=0; x<bitmap.length; x++) {
 				for (int y=0; y<bitmap[0].length; y++) {
 					if (bitmap[x][y]==0) continue;
-					this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x-s+x, this.y-s+y, 0.0f);				
+					//this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x-s+x, this.y-s+y, 0.0f);	
+					this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x, this.y, 0.0f, -s+x, -s+y, 0.0f, 1.0f);	
+					if (x==s && y == s) {
+						this.renderBlock(Tex.TEXREG_BAR[texIndex], this.x, this.y, 0.1f, -s+x, -s+y, 0.0f, 0.5f);				
+					}
 				}
 			}
 		}

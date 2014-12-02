@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector3;
 
 import de.fruitfly.kwirk.G;
 import de.fruitfly.kwirk.Kwirk;
+import de.fruitfly.kwirk.Tex;
 import de.fruitfly.kwirk.tile.ExitTile;
 import de.fruitfly.kwirk.tile.RefTile;
 import de.fruitfly.kwirk.tile.Tile;
@@ -94,8 +95,9 @@ public class Player extends Entity {
 			velY = 0.0f;
 			interpX = x;
 			interpY = y;
-			
+			G.soundWalk.stop();
 			if (Kwirk.level.getTileMap()[x][y] instanceof ExitTile) {
+				G.soundBeam.play();
 				exitTicker = 40;
 			}
 		}
@@ -129,6 +131,7 @@ public class Player extends Entity {
 	}
 	
 	protected void _move(int xoff, int yoff) {
+		G.soundWalk.play();
 		Kwirk.level.getEntityTileMap()[x][y] = null;
 		interpX = x;
 		interpY = y;
@@ -137,7 +140,6 @@ public class Player extends Entity {
 		x = x + xoff;
 		y = y + yoff;
 		moving = true;
-		
 		Kwirk.level.getEntityTileMap()[x][y] = new RefTile(this);
 	}
 	
@@ -193,6 +195,13 @@ public class Player extends Entity {
 		//modelViewProjection.set(Kwirk.cam.combined).mul(modelTransform);
 		
 		G.gl.begin(modelTransform, G.cam.view, G.cam.projection, GL20.GL_TRIANGLES);
+		
+		if (this == Kwirk.controlableEntites[Kwirk.controlledEntity]) {
+			skin = Tex.TEXREG_KWIRK;
+		}
+		else {
+			skin = Tex.TEXREG_KWIRK_STONE;
+		}
 		
 		if (ticker % 80 < 5) {
 			tex = skin[1];

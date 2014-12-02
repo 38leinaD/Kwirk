@@ -13,6 +13,8 @@ public class DesktopLauncher {
 //		config.height = 1080;
 		config.width = 1024;
 		config.height = 768;
+		//config.width = 1920/2;
+		//config.height = 1080/2;
 		new LwjglApplication(new Kwirk(), config);
 	}
 }

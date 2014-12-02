@@ -54,7 +54,8 @@ public class Level {
 		 * cam.position.set(1.0f,-3.0f, 9.0f); cam.up.set(0.0f, 0.0f, 1.0f);
 		 * cam.lookAt(5.0f, 3.5f, 2.0f);
 		 */
-		G.cam.position.set(getWidth()/1.6f, -2.0f, 8.0f);
+		float f = Kwirk.loading ? ((float)Math.sin(Kwirk.ticker/60.0f*Math.PI/2.0f)) : 1.0f;
+		G.cam.position.set(getWidth()/f*0.6f, -2.0f, 14.0f);
 		G.cam.up.set(0.0f, 0.0f, 1.0f);
 		G.cam.lookAt(getWidth()/2.0f, getHeight()/2.0f, 0.0f);
 		((OrthographicCamera) G.cam).zoom = 1.0f;

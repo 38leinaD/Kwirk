@@ -18,6 +18,7 @@ public class Tex {
 	public static TextureRegion TEXREG_TRI_ARM;
 	public static TextureRegion[] TEXREG_KWIRK;
 	public static TextureRegion[] TEXREG_KWURK;
+	public static TextureRegion[] TEXREG_KWIRK_STONE;
 
 	public static TextureRegion[] TEXREG_BAR;
 
@@ -67,6 +68,16 @@ public class Tex {
 		TEXREG_KWURK[2] = new TextureRegion(TEXTURE_GAME_ART, 16, 64, 16, 16);
 		TEXREG_KWURK[2].flip(false, true);
 		
+		
+		TEXREG_KWIRK_STONE = new TextureRegion[3];
+		TEXREG_KWIRK_STONE[0] = new TextureRegion(TEXTURE_GAME_ART, 32, 64, 16, 16);
+		TEXREG_KWIRK_STONE[0].flip(false, true);
+		
+		TEXREG_KWIRK_STONE[1] = new TextureRegion(TEXTURE_GAME_ART, 32, 80, 16, 16);
+		TEXREG_KWIRK_STONE[1].flip(false, true);
+		
+		TEXREG_KWIRK_STONE[2] = new TextureRegion(TEXTURE_GAME_ART, 48, 64, 16, 16);
+		TEXREG_KWIRK_STONE[2].flip(false, true);
 		
 		TEXREG_STAIRS = new TextureRegion(TEXTURE_GAME_ART, 48, 32, 16, 16);
 		TEXREG_STAIRS.flip(false, true);
