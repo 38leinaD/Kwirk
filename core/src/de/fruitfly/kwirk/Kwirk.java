@@ -128,6 +128,7 @@ public class Kwirk extends ApplicationAdapter {
 	public static Matrix4 projectionMatrix2D = new Matrix4();
 
 	private int levelIndex = 0;
+	private boolean gameComplete = false;
 	
 	private void loadLevel(FileHandle fh) {
 		ticker = 1;
@@ -146,6 +147,10 @@ public class Kwirk extends ApplicationAdapter {
 	}
 	
 	public void levelCompleted(Level l) {
+		if (levelIndex+1 >= levels.length) {
+			gameComplete = true;
+			return;
+		}
 		levelIndex++;
 		reloadCurrentLevel();
 	}
@@ -289,6 +294,30 @@ public class Kwirk extends ApplicationAdapter {
 				loading = false;
 		}
 
+		if (gameComplete) {
+			batch.setProjectionMatrix(projectionMatrix2D);
+			font.setScale(5.0f);
+			font.setUseIntegerPositions(true);
+			batch.begin();
+
+			String levelName = "You Won!";
+			TextBounds bounds = font.getBounds(levelName);
+
+			float x = Gdx.graphics.getWidth() / 2.0f - bounds.width / 2.0f;
+			float y = Gdx.graphics.getHeight() / 2.0f - bounds.height / 2.0f;
+
+			font.setColor(Color.BLUE);
+			font.draw(batch, levelName, x + 10, y - 10);
+			font.setColor(Color.WHITE);
+			font.draw(batch, levelName, x, y);
+			
+			font.setScale(1.0f);
+			font.draw(batch, "Thanks for playing this demo.", x, y+150);
+			font.draw(batch, "                              - Dan", x, y+200);
+
+			batch.end();
+		}
+		
 		if (editor != null) editor.render();
 	}
 	
